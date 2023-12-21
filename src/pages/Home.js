@@ -40,7 +40,11 @@ function Home({ isAuth }) {
                 )}
               </div>
             </div>
-            <div className='postTextContainer'> {post.postText} </div>
+            <div className='postTextContainer'>
+              <div> Gender: {post.gender} </div>
+              <div> Age : {post.age} </div>
+              <div> {post.postText} </div>
+            </div>
             <h3>@{post.author.name}</h3>
           </div>
         );

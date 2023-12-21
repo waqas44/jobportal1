@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 function CreatePost({ isAuth }) {
   const [title, setTitle] = useState('');
+  const [gender, setGender] = useState('');
+  const [age, setAge] = useState('');
   const [postText, setPostText] = useState('');
 
   const postsCollectionRef = collection(db, 'posts');
@@ -15,6 +17,8 @@ function CreatePost({ isAuth }) {
       title,
       postText,
       author: { name: auth.currentUser.displayName, id: auth.currentUser.uid },
+      gender: gender,
+      age: age,
     });
     navigate('/');
   };
@@ -38,6 +42,26 @@ function CreatePost({ isAuth }) {
             }}
           />
         </div>
+
+        <div className='inputGp'>
+          <label> Gender:</label>
+          <input
+            placeholder='Gender ...'
+            onChange={(event) => {
+              setGender(event.target.value);
+            }}
+          />
+        </div>
+        <div className='inputGp'>
+          <label> Age:</label>
+          <input
+            placeholder='Age...'
+            onChange={(event) => {
+              setAge(event.target.value);
+            }}
+          />
+        </div>
+
         <div className='inputGp'>
           <label> Post:</label>
           <textarea
@@ -51,7 +75,6 @@ function CreatePost({ isAuth }) {
           className='text-3xl bg-slate-600 hover:bg-blue-600'
           onClick={createPost}
         >
-          {' '}
           Submit Post
         </button>
       </div>
