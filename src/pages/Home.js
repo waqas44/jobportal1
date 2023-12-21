@@ -26,7 +26,7 @@ function Home({ isAuth }) {
           <div className='post'>
             <div className='postHeader'>
               <div className='title'>
-                <h1> {post.title}</h1>
+                <h1 className='text-3xl'> {post.title}</h1>
               </div>
               <div className='deletePost'>
                 {isAuth && post.author.id === auth.currentUser.uid && (
