@@ -27,7 +27,7 @@ function Home({ isAuth }) {
     });
 
     return () => unsubscribe(); // Cleanup function to prevent memory leaks
-  }, []); // Empty dependency array to run only once
+  }, [deletePost]); // Empty dependency array to run only once
 
   // useEffect(() => {
   //   const getPosts = async () => {
@@ -40,36 +40,41 @@ function Home({ isAuth }) {
 
   return (
     <div className='homePage'>
-      {postLists.map((post) => (
-        <div
-          className='post'
-          key={post.id}
-          onClick={() => navigate(`/posts/${post.id}`)}
-        >
-          <div className='postHeader'>
-            <div className='title'>
-              <h1 className='text-3xl'> {post.title}</h1>
+      {initialLoad && (
+        <div className='postList'>
+          {postLists.map((post) => (
+            <div className='post' key={post.id}>
+              <div className='postHeader'>
+                <div className='title'>
+                  <h1
+                    className='text-3xl'
+                    onClick={() => navigate(`/posts/${post.id}`)}
+                  >
+                    {post.title}
+                  </h1>
+                </div>
+                <div className='deletePost'>
+                  {isAuth && post.author.id === auth.currentUser.uid && (
+                    <button
+                      onClick={() => {
+                        deletePost(post.id);
+                      }}
+                    >
+                      &#128465;
+                    </button>
+                  )}
+                </div>
+              </div>
+              <div className='postTextContainer'>
+                <div> Gender: {post.gender} </div>
+                <div> Age : {post.age} </div>
+                <div> {post.postText} </div>
+              </div>
+              <h3>@{post.author.name}</h3>
             </div>
-            <div className='deletePost'>
-              {isAuth && post.author.id === auth.currentUser.uid && (
-                <button
-                  onClick={() => {
-                    deletePost(post.id);
-                  }}
-                >
-                  &#128465;
-                </button>
-              )}
-            </div>
-          </div>
-          <div className='postTextContainer'>
-            <div> Gender: {post.gender} </div>
-            <div> Age : {post.age} </div>
-            <div> {post.postText} </div>
-          </div>
-          <h3>@{post.author.name}</h3>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 }
