@@ -1,46 +1,119 @@
 import React, { useEffect, useState } from 'react';
-import { getDoc, doc } from 'firebase/firestore';
+import { getDoc, doc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import { useParams } from 'react-router-dom';
 
 function SinglePost() {
   const [post, setPost] = useState({});
-  const postId = useParams().id; // Get the post ID from the URL parameter
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({});
+  const postId = useParams().id;
 
   useEffect(() => {
     const fetchPost = async () => {
       const postDoc = doc(db, 'posts', postId);
       const docSnap = await getDoc(postDoc);
-
-      // Assuming you only need certain fields from the post
-      // Adjust this based on your actual requirements
       const postData = {
         title: docSnap.data().title,
         gender: docSnap.data().gender,
         age: docSnap.data().age,
         postText: docSnap.data().postText,
-        // ... add more fields if needed
         author: docSnap.data().author.name,
       };
-
       setPost(postData);
+      setFormData(postData); // Set initial form data
     };
 
     fetchPost();
   }, [postId]);
 
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const postDocRef = doc(db, 'posts', postId);
+    await updateDoc(postDocRef, {
+      title: formData.title,
+      gender: formData.gender,
+      age: formData.age,
+      postText: formData.postText,
+      // Update other fields as needed
+    });
+
+    // Fetch the updated data from Firebase
+    const updatedDocSnap = await getDoc(postDocRef);
+    const updatedPostData = {
+      title: updatedDocSnap.data().title,
+      gender: updatedDocSnap.data().gender,
+      age: updatedDocSnap.data().age,
+      postText: updatedDocSnap.data().postText,
+      author: updatedDocSnap.data().author.name,
+    };
+
+    // Update the local state with the fetched data
+    setPost(updatedPostData);
+    setFormData(updatedPostData);
+
+    setIsEditing(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   return (
     <div className='singlePost'>
-      {/* Display post details here using the 'post' state object */}
-      <h1 className='text-3xl'>{post.title}</h1>
-      <div className='posst-content'> </div>
-      <div className='postTextContainer'>
-        <div> Gender: {post.gender} </div>
-        <div> Age : {post.age} </div>
-        <div> {post.postText} </div>
-      </div>
-      <h3>@{post.author}</h3>
-      {/* ... rest of your post content */}
+      {isEditing ? (
+        <form onSubmit={handleSubmit}>
+          <input
+            type='text'
+            name='title'
+            value={formData.title}
+            onChange={handleChange}
+            placeholder='Title'
+          />
+          <input
+            type='text'
+            name='gender'
+            value={formData.gender}
+            onChange={handleChange}
+            placeholder='Gender'
+          />
+          <input
+            type='number'
+            name='age'
+            value={formData.age}
+            onChange={handleChange}
+            placeholder='Age'
+          />
+          <textarea
+            name='postText'
+            value={formData.postText}
+            onChange={handleChange}
+            placeholder='Post Text'
+          ></textarea>
+          {/* Add other fields as needed */}
+          <button type='submit'>Update</button>
+        </form>
+      ) : (
+        <>
+          <h1 className='text-3xl'>{post.title}</h1>
+          <div className='posst-content'></div>
+          <div className='postTextContainer'>
+            <div>Gender: {post.gender}</div>
+            <div>Age: {post.age}</div>
+            <div>{post.postText}</div>
+          </div>
+          <h3>@{post.author}</h3>
+          <button onClick={handleEdit}>Edit</button>
+        </>
+      )}
     </div>
   );
 }
