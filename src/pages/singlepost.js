@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { getDoc, doc, updateDoc } from 'firebase/firestore';
+import { getDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function SinglePost() {
   const [post, setPost] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
   const postId = useParams().id;
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -59,6 +60,12 @@ function SinglePost() {
     setIsEditing(false);
   };
 
+  const handleDelete = async () => {
+    const postDocRef = doc(db, 'posts', postId);
+    await deleteDoc(postDocRef);
+    navigate('/'); // Redirect to the home page after deletion using useNavigate
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -100,6 +107,10 @@ function SinglePost() {
           ></textarea>
           {/* Add other fields as needed */}
           <button type='submit'>Update</button>
+          <button type='button' onClick={handleDelete}>
+            Delete
+          </button>{' '}
+          {/* Add delete button */}
         </form>
       ) : (
         <>
@@ -112,6 +123,8 @@ function SinglePost() {
           </div>
           <h3>@{post.author}</h3>
           <button onClick={handleEdit}>Edit</button>
+          <button onClick={handleDelete}>Delete</button>{' '}
+          {/* Add delete button */}
         </>
       )}
     </div>
