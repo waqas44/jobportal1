@@ -6,12 +6,12 @@ import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyBc7IjSuYVq-tk6auoQk8nr1QS8BE7V03U',
-  authDomain: 'forjobportal2.firebaseapp.com',
-  projectId: 'forjobportal2',
-  storageBucket: 'forjobportal2.appspot.com',
-  messagingSenderId: '203639925715',
-  appId: '1:203639925715:web:9bf16405bc933566f61d26',
+  apiKey: 'AIzaSyAEIXjl8W55fKU4hs3mRU57ljmdIUlGfUg',
+  authDomain: 'forjobportal-efdbf.firebaseapp.com',
+  projectId: 'forjobportal-efdbf',
+  storageBucket: 'forjobportal-efdbf.appspot.com',
+  messagingSenderId: '95206001929',
+  appId: '1:95206001929:web:d82a6fe5472aefe01057d8',
 };
 
 // Initialize Firebase

@@ -29,15 +29,6 @@ function Home({ isAuth }) {
     return () => unsubscribe(); // Cleanup function to prevent memory leaks
   }, [deletePost]); // Empty dependency array to run only once
 
-  // useEffect(() => {
-  //   const getPosts = async () => {
-  //     const data = await getDocs(postsCollectionRef);
-  //     setPostList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  //   };
-
-  //   getPosts();
-  // }, [deletePost]);
-
   return (
     <div className='homePage'>
       {initialLoad && (
@@ -47,7 +38,7 @@ function Home({ isAuth }) {
               <div className='postHeader'>
                 <div className='title'>
                   <h1
-                    className='text-3xl'
+                    className='text-3xl cursor-pointer'
                     onClick={() => navigate(`/posts/${post.id}`)}
                   >
                     {post.title}
