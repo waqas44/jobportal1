@@ -13,30 +13,38 @@ import { useNavigate } from 'react-router-dom';
 function Home({ isAuth }) {
   const [postLists, setPostList] = useState([]);
   const [initialLoad, setInitialLoad] = useState(false);
-  const [editingPostId, setEditingPostId] = useState(null);
-  const [editedPostText, setEditedPostText] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedPost, setEditedPost] = useState({});
   const postsCollectionRef = collection(db, 'posts');
   const navigate = useNavigate();
 
   const deletePost = async (id) => {
-    const postDoc = doc(db, 'posts', id);
-    await deleteDoc(postDoc);
+    const confirmation = window.confirm(
+      'Are you sure you want to delete this post?'
+    );
+    if (confirmation) {
+      const postDoc = doc(db, 'posts', id);
+      await deleteDoc(postDoc);
+    }
   };
 
-  const startEditing = (id, postText) => {
-    setEditingPostId(id);
-    setEditedPostText(postText);
+  const startEditing = (post) => {
+    setIsEditing(true);
+    setEditedPost(post);
   };
 
   const cancelEditing = () => {
-    setEditingPostId(null);
-    setEditedPostText('');
+    setIsEditing(false);
+    setEditedPost({});
   };
 
-  const updatePost = async (id) => {
-    const postDoc = doc(db, 'posts', id);
+  const updatePost = async () => {
+    const postDoc = doc(db, 'posts', editedPost.id);
     await updateDoc(postDoc, {
-      postText: editedPostText,
+      title: editedPost.title,
+      postText: editedPost.postText,
+      gender: editedPost.gender,
+      age: editedPost.age,
     });
     cancelEditing();
   };
@@ -58,11 +66,13 @@ function Home({ isAuth }) {
             <div className='post' key={post.id}>
               <div className='postHeader'>
                 <div className='title'>
-                  {editingPostId === post.id ? (
+                  {isEditing ? (
                     <input
                       type='text'
-                      value={editedPostText}
-                      onChange={(e) => setEditedPostText(e.target.value)}
+                      value={editedPost.title}
+                      onChange={(e) =>
+                        setEditedPost({ ...editedPost, title: e.target.value })
+                      }
                     />
                   ) : (
                     <h1
@@ -76,19 +86,13 @@ function Home({ isAuth }) {
                 <div className='editDeleteButtons'>
                   {isAuth && post.author.id === auth.currentUser.uid && (
                     <>
-                      {editingPostId === post.id ? (
+                      {isEditing ? (
                         <>
-                          <button onClick={() => updatePost(post.id)}>
-                            Save
-                          </button>
+                          <button onClick={updatePost}>Save</button>
                           <button onClick={cancelEditing}>Cancel</button>
                         </>
                       ) : (
-                        <button
-                          onClick={() => startEditing(post.id, post.postText)}
-                        >
-                          Edit
-                        </button>
+                        <button onClick={() => startEditing(post)}>Edit</button>
                       )}
                       <button onClick={() => deletePost(post.id)}>
                         &#128465;
@@ -98,13 +102,50 @@ function Home({ isAuth }) {
                 </div>
               </div>
               <div className='postTextContainer'>
-                <div> Gender: {post.gender} </div>
-                <div> Age: {post.age} </div>
                 <div>
                   {' '}
-                  {editingPostId === post.id
-                    ? editedPostText
-                    : post.postText}{' '}
+                  Gender:
+                  {isEditing ? (
+                    <input
+                      type='text'
+                      value={editedPost.gender}
+                      onChange={(e) =>
+                        setEditedPost({ ...editedPost, gender: e.target.value })
+                      }
+                    />
+                  ) : (
+                    post.gender
+                  )}
+                </div>
+                <div>
+                  {' '}
+                  Age:
+                  {isEditing ? (
+                    <input
+                      type='text'
+                      value={editedPost.age}
+                      onChange={(e) =>
+                        setEditedPost({ ...editedPost, age: e.target.value })
+                      }
+                    />
+                  ) : (
+                    post.age
+                  )}
+                </div>
+                <div>
+                  {isEditing ? (
+                    <textarea
+                      value={editedPost.postText}
+                      onChange={(e) =>
+                        setEditedPost({
+                          ...editedPost,
+                          postText: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    post.postText
+                  )}
                 </div>
               </div>
               <h3>@{post.author.name}</h3>

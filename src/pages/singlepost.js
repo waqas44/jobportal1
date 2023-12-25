@@ -61,9 +61,15 @@ function SinglePost() {
   };
 
   const handleDelete = async () => {
-    const postDocRef = doc(db, 'posts', postId);
-    await deleteDoc(postDocRef);
-    navigate('/'); // Redirect to the home page after deletion using useNavigate
+    const shouldDelete = window.confirm(
+      'Are you sure you want to delete this post?'
+    );
+
+    if (shouldDelete) {
+      const postDocRef = doc(db, 'posts', postId);
+      await deleteDoc(postDocRef);
+      navigate('/'); // Redirect to the home page after deletion using useNavigate
+    }
   };
 
   const handleChange = (e) => {
