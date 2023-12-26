@@ -1,85 +1,294 @@
-import React, { useState, useEffect } from 'react';
-import { addDoc, collection } from 'firebase/firestore';
-import { db, auth } from '../firebase-config';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import {
+  getDocs,
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  updateDoc,
+} from 'firebase/firestore';
+import { auth, db } from '../firebase-config';
+import { Link, useNavigate } from 'react-router-dom';
 
-function CreatePost({ isAuth }) {
+function Home({ isAuth }) {
+  const [postLists, setPostList] = useState([]);
+  const [initialLoad, setInitialLoad] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedPost, setEditedPost] = useState({});
+  const [editingPostId, setEditingPostId] = useState(null);
+
+  // New state variables
   const [title, setTitle] = useState('');
-  const [gender, setGender] = useState('');
-  const [age, setAge] = useState('');
-  const [postText, setPostText] = useState('');
+  const [jobTitle, setJobTitle] = useState('');
+  const [jobDescription, setJobDescription] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [jobType, setJobType] = useState('');
+  const [skills, setSkills] = useState('');
+  const [postDate, setPostDate] = useState('');
+  const [location, setLocation] = useState('');
+  const [requirements, setRequirements] = useState('');
+  const [jobLink, setJobLink] = useState('');
 
   const postsCollectionRef = collection(db, 'posts');
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const createPost = async () => {
-    await addDoc(postsCollectionRef, {
-      title,
-      postText,
-      author: { name: auth.currentUser.displayName, id: auth.currentUser.uid },
-      gender: gender,
-      age: age,
+  const deletePost = async (id) => {
+    const confirmation = window.confirm(
+      'Are you sure you want to delete this post?'
+    );
+    if (confirmation) {
+      const postDoc = doc(db, 'posts', id);
+      await deleteDoc(postDoc);
+    }
+  };
+
+  const startEditing = (postId) => {
+    setIsEditing(true);
+    // setEditedPost(post);
+    setEditingPostId(postId);
+  };
+
+  const cancelEditing = () => {
+    setIsEditing(false);
+    // setEditedPost({});
+    setEditingPostId(null);
+  };
+
+  const updatePost = async () => {
+    const postDoc = doc(db, 'posts', editedPost.id);
+    await updateDoc(postDoc, {
+      title: editedPost.title,
+      jobTitle: editedPost.jobTitle,
+      jobDescription: editedPost.jobDescription,
+      companyName: editedPost.companyName,
+      jobType: editedPost.jobType,
+      skills: editedPost.skills,
+      postDate: editedPost.postDate,
+      location: editedPost.location,
+      requirements: editedPost.requirements,
+      jobLink: editedPost.jobLink,
     });
-    navigate('/');
+    cancelEditing();
   };
 
   useEffect(() => {
-    if (!isAuth) {
-      navigate('/login');
-    }
+    const unsubscribe = onSnapshot(postsCollectionRef, (snapshot) => {
+      setPostList(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setInitialLoad(true);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   return (
-    <div className='createPostPage'>
-      <div className='cpContainer'>
-        <h1 className='text-3xl'>Post A Job</h1>
-        <div className='inputGp'>
-          <label> Job Title:</label>
-          <input
-            placeholder='Title...'
-            onChange={(event) => {
-              setTitle(event.target.value);
-            }}
-          />
-        </div>
+    <div className='homePage'>
+      {initialLoad && (
+        <div className='postList'>
+          {postLists.map((post) => (
+            <div className='post' key={post.id}>
+              <div className='postHeader'>
+                <div className='title'>
+                  {isEditing ? (
+                    <input
+                      type='text'
+                      value={editedPost.title}
+                      onChange={(e) =>
+                        setEditedPost({ ...editedPost, title: e.target.value })
+                      }
+                    />
+                  ) : (
+                    <h1
+                      className='text-3xl cursor-pointer'
+                      onClick={() => navigate(`/posts/${post.id}`)}
+                    >
+                      {post.title}
+                    </h1>
+                  )}
+                </div>
 
-        <div className='inputGp'>
-          <label> Gender:</label>
-          <input
-            placeholder='Gender ...'
-            onChange={(event) => {
-              setGender(event.target.value);
-            }}
-          />
-        </div>
-        <div className='inputGp'>
-          <label> Age:</label>
-          <input
-            placeholder='Age...'
-            onChange={(event) => {
-              setAge(event.target.value);
-            }}
-          />
-        </div>
+                <div className='editDeleteButtons'>
+                  {isAuth && post.author.id === auth.currentUser.uid && (
+                    <>
+                      {editingPostId === post.id ? (
+                        <>
+                          <button onClick={updatePost}>Save</button>
+                          <button onClick={cancelEditing}>Cancel</button>
+                        </>
+                      ) : (
+                        <button onClick={() => startEditing(post.id)}>
+                          Edit
+                        </button>
+                      )}
+                      <button onClick={() => deletePost(post.id)}>🗑️</button>
+                    </>
+                  )}
+                </div>
+              </div>
 
-        <div className='inputGp'>
-          <label> Post:</label>
-          <textarea
-            placeholder='Post...'
-            onChange={(event) => {
-              setPostText(event.target.value);
-            }}
-          />
+              <div className='postTextContainer'>
+                <div>
+                  Job Title:{' '}
+                  {editingPostId === post.id ? (
+                    <input
+                      type='text'
+                      value={editedPost.jobTitle}
+                      onChange={(e) =>
+                        setEditedPost({
+                          ...editedPost,
+                          jobTitle: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    post.jobTitle
+                  )}
+                </div>
+                <div>
+                  Job Description:{' '}
+                  {editingPostId === post.id ? (
+                    <textarea
+                      value={editedPost.jobDescription}
+                      onChange={(e) =>
+                        setEditedPost({
+                          ...editedPost,
+                          jobDescription: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    post.jobDescription
+                  )}
+                </div>
+                <div>
+                  Company Name:{' '}
+                  {editingPostId === post.id ? (
+                    <input
+                      type='text'
+                      value={editedPost.companyName}
+                      onChange={(e) =>
+                        setEditedPost({
+                          ...editedPost,
+                          companyName: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    post.companyName
+                  )}
+                </div>
+                <div>
+                  Job Type:{' '}
+                  {editingPostId === post.id ? (
+                    <input
+                      type='text'
+                      value={editedPost.jobType}
+                      onChange={(e) =>
+                        setEditedPost({
+                          ...editedPost,
+                          jobType: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    post.jobType
+                  )}
+                </div>
+                <div>
+                  Skills:{' '}
+                  {editingPostId === post.id ? (
+                    <input
+                      type='text'
+                      value={editedPost.skills}
+                      onChange={(e) =>
+                        setEditedPost({ ...editedPost, skills: e.target.value })
+                      }
+                    />
+                  ) : (
+                    post.skills
+                  )}
+                </div>
+                <div>
+                  Post Date:{' '}
+                  {editingPostId === post.id ? (
+                    <input
+                      type='date'
+                      value={editedPost.postDate}
+                      onChange={(e) =>
+                        setEditedPost({
+                          ...editedPost,
+                          postDate: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    post.postDate
+                  )}
+                </div>
+                <div>
+                  Location:{' '}
+                  {editingPostId === post.id ? (
+                    <input
+                      type='text'
+                      value={editedPost.location}
+                      onChange={(e) =>
+                        setEditedPost({
+                          ...editedPost,
+                          location: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    post.location
+                  )}
+                </div>
+                <div>
+                  Requirements (Degree):{' '}
+                  {editingPostId === post.id ? (
+                    <input
+                      type='text'
+                      value={editedPost.requirements}
+                      onChange={(e) =>
+                        setEditedPost({
+                          ...editedPost,
+                          requirements: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    post.requirements
+                  )}
+                </div>
+
+                <div>
+                  Job Url Link:
+                  {editingPostId === post.id ? (
+                    <input
+                      type='text'
+                      value={editedPost.jobLink}
+                      onChange={(e) =>
+                        setJobLink({
+                          ...editedPost,
+                          jobLink: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    <a
+                      className='bg-teal-400 rounded-md py-1 px-2'
+                      href={post.jobLink}
+                    >
+                      Apply
+                    </a>
+                  )}
+                </div>
+              </div>
+              <h3>@{post.author.name}</h3>
+            </div>
+          ))}
         </div>
-        <button
-          className='text-3xl bg-slate-600 hover:bg-blue-600'
-          onClick={createPost}
-        >
-          Submit Post
-        </button>
-      </div>
+      )}
     </div>
   );
 }
 
-export default CreatePost;
+export default Home;
