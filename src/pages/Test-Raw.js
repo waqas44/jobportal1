@@ -15,7 +15,7 @@ function Home({ isAuth }) {
   const [initialLoad, setInitialLoad] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedPost, setEditedPost] = useState({});
-  const [editingPostId, setEditingPostId] = useState(null);
+  const [editedPostId, setEditedPostId] = useState(null);
 
   // New state variables
   const [title, setTitle] = useState('');
@@ -27,7 +27,7 @@ function Home({ isAuth }) {
   const [postDate, setPostDate] = useState('');
   const [location, setLocation] = useState('');
   const [requirements, setRequirements] = useState('');
-  const [jobLink, setJobLink] = useState('');
+  const [jobLink, setJobLink] = useState(''); // New state variable for job link
 
   const postsCollectionRef = collection(db, 'posts');
   const navigate = useNavigate();
@@ -42,20 +42,41 @@ function Home({ isAuth }) {
     }
   };
 
-  const startEditing = (postId) => {
+  const startEditing = (post) => {
     setIsEditing(true);
-    // setEditedPost(post);
-    setEditingPostId(postId);
+    setEditedPostId(post.id);
+    setTitle(post.title);
+    setJobTitle(post.jobTitle);
+    setJobDescription(post.jobDescription);
+    setCompanyName(post.companyName);
+    setJobType(post.jobType);
+    setSkills(post.skills);
+    setPostDate(post.postDate);
+    setLocation(post.location);
+    setRequirements(post.requirements);
+
+    setEditedPost(post);
   };
 
   const cancelEditing = () => {
     setIsEditing(false);
-    // setEditedPost({});
-    setEditingPostId(null);
+
+    setEditedPostId(null);
+    setTitle('');
+    setJobTitle('');
+    setJobDescription('');
+    setCompanyName('');
+    setJobType('');
+    setSkills('');
+    setPostDate('');
+    setLocation('');
+    setRequirements('');
+    setJobLink('');
+    setEditedPost({});
   };
 
   const updatePost = async () => {
-    const postDoc = doc(db, 'posts', editedPost.id);
+    const postDoc = doc(db, 'posts', editedPostId);
     await updateDoc(postDoc, {
       title: editedPost.title,
       jobTitle: editedPost.jobTitle,
@@ -66,7 +87,7 @@ function Home({ isAuth }) {
       postDate: editedPost.postDate,
       location: editedPost.location,
       requirements: editedPost.requirements,
-      jobLink: editedPost.jobLink,
+      jobLink: jobLink !== '' ? jobLink : undefined, // Only update if jobLink has a value
     });
     cancelEditing();
   };
@@ -88,7 +109,7 @@ function Home({ isAuth }) {
             <div className='post' key={post.id}>
               <div className='postHeader'>
                 <div className='title'>
-                  {isEditing ? (
+                  {editedPostId === post.id ? (
                     <input
                       type='text'
                       value={editedPost.title}
@@ -109,15 +130,13 @@ function Home({ isAuth }) {
                 <div className='editDeleteButtons'>
                   {isAuth && post.author.id === auth.currentUser.uid && (
                     <>
-                      {editingPostId === post.id ? (
+                      {editedPostId === post.id ? (
                         <>
                           <button onClick={updatePost}>Save</button>
                           <button onClick={cancelEditing}>Cancel</button>
                         </>
                       ) : (
-                        <button onClick={() => startEditing(post.id)}>
-                          Edit
-                        </button>
+                        <button onClick={() => startEditing(post)}>Edit</button>
                       )}
                       <button onClick={() => deletePost(post.id)}>🗑️</button>
                     </>
@@ -128,7 +147,7 @@ function Home({ isAuth }) {
               <div className='postTextContainer'>
                 <div>
                   Job Title:{' '}
-                  {editingPostId === post.id ? (
+                  {editedPostId === post.id ? (
                     <input
                       type='text'
                       value={editedPost.jobTitle}
@@ -145,7 +164,7 @@ function Home({ isAuth }) {
                 </div>
                 <div>
                   Job Description:{' '}
-                  {editingPostId === post.id ? (
+                  {editedPostId === post.id ? (
                     <textarea
                       value={editedPost.jobDescription}
                       onChange={(e) =>
@@ -161,7 +180,7 @@ function Home({ isAuth }) {
                 </div>
                 <div>
                   Company Name:{' '}
-                  {editingPostId === post.id ? (
+                  {editedPostId === post.id ? (
                     <input
                       type='text'
                       value={editedPost.companyName}
@@ -178,7 +197,7 @@ function Home({ isAuth }) {
                 </div>
                 <div>
                   Job Type:{' '}
-                  {editingPostId === post.id ? (
+                  {editedPostId === post.id ? (
                     <input
                       type='text'
                       value={editedPost.jobType}
@@ -195,7 +214,7 @@ function Home({ isAuth }) {
                 </div>
                 <div>
                   Skills:{' '}
-                  {editingPostId === post.id ? (
+                  {editedPostId === post.id ? (
                     <input
                       type='text'
                       value={editedPost.skills}
@@ -209,7 +228,7 @@ function Home({ isAuth }) {
                 </div>
                 <div>
                   Post Date:{' '}
-                  {editingPostId === post.id ? (
+                  {editedPostId === post.id ? (
                     <input
                       type='date'
                       value={editedPost.postDate}
@@ -226,7 +245,7 @@ function Home({ isAuth }) {
                 </div>
                 <div>
                   Location:{' '}
-                  {editingPostId === post.id ? (
+                  {editedPostId === post.id ? (
                     <input
                       type='text'
                       value={editedPost.location}
@@ -243,7 +262,7 @@ function Home({ isAuth }) {
                 </div>
                 <div>
                   Requirements (Degree):{' '}
-                  {editingPostId === post.id ? (
+                  {editedPostId === post.id ? (
                     <input
                       type='text'
                       value={editedPost.requirements}
@@ -260,17 +279,12 @@ function Home({ isAuth }) {
                 </div>
 
                 <div>
-                  Job Url Link:
-                  {editingPostId === post.id ? (
+                  Job Link:
+                  {editedPostId === post.id ? (
                     <input
                       type='text'
-                      value={editedPost.jobLink}
-                      onChange={(e) =>
-                        setJobLink({
-                          ...editedPost,
-                          jobLink: e.target.value,
-                        })
-                      }
+                      value={jobLink}
+                      onChange={(e) => setJobLink(e.target.value)}
                     />
                   ) : (
                     <a
