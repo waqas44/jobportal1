@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import '../single.css';
 
 function SinglePost() {
   const [post, setPost] = useState({});
@@ -92,6 +93,7 @@ function SinglePost() {
             placeholder='Title'
           />
           <input
+            className='border border-gray-300 rounded-md py-1 pl-4 '
             type='text'
             name='gender'
             value={formData.gender}
@@ -99,6 +101,7 @@ function SinglePost() {
             placeholder='Gender'
           />
           <input
+            className='border border-gray-300 rounded-md py-1 pl-4 '
             type='number'
             name='age'
             value={formData.age}
