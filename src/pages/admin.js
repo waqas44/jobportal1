@@ -10,7 +10,7 @@ import {
 import { auth, db } from '../firebase-config';
 import { Link, useNavigate } from 'react-router-dom';
 
-function Home({ isAuth }) {
+function Admin({ isAuth }) {
   const [postLists, setPostList] = useState([]);
   const [initialLoad, setInitialLoad] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -107,40 +107,79 @@ function Home({ isAuth }) {
         <div className='postList'>
           {postLists.map((post) => (
             <div className='post ' key={post.id}>
+              <div className='editDeleteButtons'>
+                {isAuth && post.author.id === auth.currentUser.uid && (
+                  <>
+                    {editedPostId === post.id ? (
+                      <>
+                        <button
+                          className='text-purple-800 text-sm border border-purple-400 px-5 py-1 rounded-md hover:bg-purple-400 hover:text-white mr-2'
+                          onClick={updatePost}
+                        >
+                          Save
+                        </button>
+                        <button
+                          className='text-orange-400 text-sm border border-orange-400 px-5 py-1 rounded-md hover:bg-orange-500 hover:text-white mr-2'
+                          onClick={cancelEditing}
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        className='text-blue-500 text-sm border border-blue-500 px-5 py-1 rounded-md hover:bg-blue-500 hover:text-white mr-3 '
+                        onClick={() => startEditing(post)}
+                      >
+                        Edit
+                      </button>
+                    )}
+                    <button onClick={() => deletePost(post.id)}>🗑️</button>
+                  </>
+                )}
+              </div>
               <div className='postHeader'>
                 <div className='title'>
-                  Title:
-                  {
+                  <label> Title:</label>
+                  {editedPostId === post.id ? (
+                    <input
+                      className='border-gray-300'
+                      type='text'
+                      value={editedPost.title}
+                      onChange={(e) =>
+                        setEditedPost({ ...editedPost, title: e.target.value })
+                      }
+                    />
+                  ) : (
                     <h1
                       className='text-3xl cursor-pointer'
                       onClick={() => navigate(`/posts/${post.id}`)}
                     >
                       {post.title}
                     </h1>
-                  }
-                </div>
-
-                <div className='editDeleteButtons'>
-                  {isAuth && post.author.id === auth.currentUser.uid && (
-                    <>
-                      {editedPostId === post.id ? (
-                        <>
-                          <button onClick={updatePost}>Save</button>
-                          <button onClick={cancelEditing}>Cancel</button>
-                        </>
-                      ) : (
-                        <button onClick={() => startEditing(post)}>Edit</button>
-                      )}
-                      <button onClick={() => deletePost(post.id)}>🗑️</button>
-                    </>
                   )}
                 </div>
               </div>
 
               <div className='postTextContainer'>
-                <div>{post.jobTitle}</div>
                 <div>
-                  Job Description:{' '}
+                  <label> Job Title:</label>
+                  {editedPostId === post.id ? (
+                    <input
+                      type='text'
+                      value={editedPost.jobTitle}
+                      onChange={(e) =>
+                        setEditedPost({
+                          ...editedPost,
+                          jobTitle: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    post.jobTitle
+                  )}
+                </div>
+                <div>
+                  <label>Job Description:</label>
                   {editedPostId === post.id ? (
                     <textarea
                       value={editedPost.jobDescription}
@@ -156,7 +195,7 @@ function Home({ isAuth }) {
                   )}
                 </div>
                 <div>
-                  Company Name:{' '}
+                  <label> Company Name:</label>
                   {editedPostId === post.id ? (
                     <input
                       type='text'
@@ -173,7 +212,7 @@ function Home({ isAuth }) {
                   )}
                 </div>
                 <div>
-                  Job Type:{' '}
+                  <label> Job Type:</label>
                   {editedPostId === post.id ? (
                     <input
                       type='text'
@@ -190,7 +229,7 @@ function Home({ isAuth }) {
                   )}
                 </div>
                 <div>
-                  Skills:{' '}
+                  <label>Skills:</label>
                   {editedPostId === post.id ? (
                     <input
                       type='text'
@@ -204,7 +243,7 @@ function Home({ isAuth }) {
                   )}
                 </div>
                 <div>
-                  Post Date:{' '}
+                  <label>Post Date:</label>
                   {editedPostId === post.id ? (
                     <input
                       type='date'
@@ -221,7 +260,7 @@ function Home({ isAuth }) {
                   )}
                 </div>
                 <div>
-                  Location:{' '}
+                  <label>Location:</label>
                   {editedPostId === post.id ? (
                     <input
                       type='text'
@@ -238,7 +277,7 @@ function Home({ isAuth }) {
                   )}
                 </div>
                 <div>
-                  Requirements (Degree):{' '}
+                  <label>Requirements (Degree):</label>
                   {editedPostId === post.id ? (
                     <input
                       type='text'
@@ -256,7 +295,7 @@ function Home({ isAuth }) {
                 </div>
 
                 <div>
-                  Job Url Link:
+                  <label>Job Url Link:</label>
                   {editedPostId === post.id ? (
                     <input
                       type='text'
@@ -270,7 +309,7 @@ function Home({ isAuth }) {
                     />
                   ) : (
                     <a href={post.jobLink}>
-                      <button className='text-blue-500 border border-blue-500 px-10 py-2 rounded-md hover:bg-blue-500 hover:text-white '>
+                      <button className='text-blue-500 text-sm border border-blue-500 px-5 py-1 rounded-md hover:bg-blue-500 hover:text-white '>
                         Apply
                       </button>
                     </a>
@@ -286,4 +325,4 @@ function Home({ isAuth }) {
   );
 }
 
-export default Home;
+export default Admin;
