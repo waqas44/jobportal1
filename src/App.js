@@ -24,7 +24,7 @@ function App() {
 
   return (
     <Router>
-      <nav>
+      <div className='navbar'>
         <Link to='/'> Home </Link>
 
         {!isAuth ? (
@@ -32,13 +32,13 @@ function App() {
         ) : (
           <>
             <Link to='/createpost'> Add Job </Link>
-            <Link to='/createpost2'> Add Job2</Link>
+            {/* <Link to='/createpost2'> Add Job2</Link> */}
             <Link to='/admin'> Admin Panel </Link>
-            <Link to='/admin2'> Admin 2 </Link>
+            {/* <Link to='/admin2'> Admin 2 </Link> */}
             <button onClick={signUserOut}> Log Out</button>
           </>
         )}
-      </nav>
+      </div>
       <Routes>
         <Route path='/' element={<Home isAuth={isAuth} />} />
         <Route path='/admin' element={<Admin isAuth={isAuth} />} />
