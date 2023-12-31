@@ -23,7 +23,7 @@ function Banner(props) {
           <div>
             <div className='category-text'>Software</div>
             <div className='category-text'>| &nbsp;Posted on:</div>
-            <div className='category-text'>2023-12-08</div>
+            <div className='category-text'>{props.postInfo.postDate}</div>
             <div className='category-text'>| &nbsp;Late Date to apply:</div>
             <div className='category-text'>2024-01-01</div>
           </div>
