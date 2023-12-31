@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { getDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, useNavigate, Link } from 'react-router-dom'; // Import useNavigate
 import '../single.css';
 import Banner from '../components/Banner';
 
-function SinglePost() {
+function SinglePost2() {
   const [post, setPost] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
@@ -18,11 +18,20 @@ function SinglePost() {
       const docSnap = await getDoc(postDoc);
       const postData = {
         title: docSnap.data().title,
+        jobTitle: docSnap.data().jobTitle,
+        companyName: docSnap.data().companyName,
+        jobDescription: docSnap.data().jobDescription,
+        jobType: docSnap.data().jobType,
+        location: docSnap.data().location,
+        postDate: docSnap.data().postDate,
+        requirements: docSnap.data().requirements,
+        skills: docSnap.data().skills,
         gender: docSnap.data().gender,
         age: docSnap.data().age,
         postText: docSnap.data().postText,
         author: docSnap.data().author.name,
       };
+      console.log(docSnap.data());
       setPost(postData);
       setFormData(postData); // Set initial form data
     };
@@ -81,7 +90,9 @@ function SinglePost() {
       [name]: value,
     }));
   };
-
+  const cancelHandle = () => {
+    setIsEditing(false);
+  };
   return (
     <>
       <div className='singlePost'>
@@ -118,16 +129,32 @@ function SinglePost() {
             ></textarea>
             {/* Add other fields as needed */}
             <button type='submit'>Update</button>
-            <button type='button' onClick={handleDelete}>
-              Delete
-            </button>{' '}
+            <button type='button' onClick={cancelHandle}>
+              Cancel
+            </button>
             {/* Add delete button */}
           </form>
         ) : (
           <>
             <h1 className='text-3xl'>{post.title}</h1>
-            <div className='posst-content'></div>
             <div className='postTextContainer'>
+              <div className='post-content'>Job Title : {post.jobTitle}</div>
+              <div className='post-content'>
+                Company Name : {post.companyName}
+              </div>
+              <div className='post-content'>
+                Job Description : <pre>{post.jobDescription}</pre>
+              </div>
+              <div className='post-content'>Job Type : {post.jobType}</div>
+              <div className='post-content'>Location : {post.location}</div>
+              <div className='post-content'>Skills : {post.skills}</div>
+              <div className='post-content'>Post Date : {post.postDate}</div>
+              <div className='post-content'>
+                Requirements :{post.requirements}
+              </div>
+              <div className='post-content'>Job Link : {post.jobLink}</div>
+              <div className='post-content'>Post Date : {post.postDate}</div>
+
               <div>Gender: {post.gender}</div>
               <div>Age: {post.age}</div>
               <div>{post.postText}</div>
@@ -139,15 +166,15 @@ function SinglePost() {
           </>
         )}
       </div>
-      <Banner />
+      <Banner postInfo={post} />
       <div className='section'>
         <div className='w-container'>
           <div className='align-center'>
-            <h2 className='logo-title'>Shopify Developer</h2>
+            <h2 className='logo-title'>{post.jobTitle}</h2>
             <div className='small space'></div>
             <div>
               <div className='meta-tag no-float'>
-                <div>BrainX Technologies</div>
+                <div> {post.companyName}</div>
               </div>
               <div className='marker meta-tag no-float'>
                 <div>Lahore, Pakistan</div>
@@ -328,4 +355,4 @@ function SinglePost() {
   );
 }
 
-export default SinglePost;
+export default SinglePost2;

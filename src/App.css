@@ -222,4 +222,11 @@ textarea {
   text-align: right;
 }
 
+.inputGp select {
+  color: #000;
+  height: 40px;
+  border-radius: 3px;
+  @apply pr-2;
+}
+
 /* Single Post */

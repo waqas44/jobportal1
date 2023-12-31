@@ -88,7 +88,10 @@ function CreatePost({ isAuth }) {
 
         <div className='inputGp'>
           <label> Job Type:</label>
-          <select onChange={(event) => setJobType(event.target.value)}>
+          <select
+            defaultValue={jobType}
+            onChange={(event) => setJobType(event.target.value)}
+          >
             <option value='remote'>Remote</option>
             <option value='inoffice'>In Office</option>
           </select>

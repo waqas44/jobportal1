@@ -10,7 +10,7 @@ import {
 import { auth, db } from '../firebase-config';
 import { Link, useNavigate } from 'react-router-dom';
 
-function Home({ isAuth }) {
+function Home2({ isAuth }) {
   const [postLists, setPostList] = useState([]);
   const [initialLoad, setInitialLoad] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -286,4 +286,4 @@ function Home({ isAuth }) {
   );
 }
 
-export default Home;
+export default Home2;

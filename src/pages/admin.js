@@ -112,7 +112,6 @@ function Admin({ isAuth }) {
 
   return (
     <>
-      <Banner />
       <div className='homePage'>
         {initialLoad && (
           <div className='postList'>
