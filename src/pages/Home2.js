@@ -29,6 +29,8 @@ function Home2({ isAuth }) {
   const [requirements, setRequirements] = useState('');
   const [jobLink, setJobLink] = useState('');
 
+  const [courses, setCourses] = useState([]);
+
   const postsCollectionRef = collection(db, 'posts');
   const navigate = useNavigate();
 
@@ -91,7 +93,18 @@ function Home2({ isAuth }) {
     });
     cancelEditing();
   };
+  useEffect(() => {
+    // Fetch courses from Firebase
+    const fetchCourses = async () => {
+      const coursesSnapshot = await getDocs(collection(db, 'posts'));
+      const coursesData = coursesSnapshot.docs.map((doc) => doc.data().courses);
 
+      setCourses(coursesData);
+      console.log(coursesData);
+    };
+
+    fetchCourses();
+  }, []);
   useEffect(() => {
     const unsubscribe = onSnapshot(postsCollectionRef, (snapshot) => {
       setPostList(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
@@ -253,6 +266,9 @@ function Home2({ isAuth }) {
                   ) : (
                     post.requirements
                   )}
+                </div>
+                <div>
+                  Courses: {post.courses ? post.courses.join(', ') : 'None'}
                 </div>
 
                 <div>

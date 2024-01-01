@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { addDoc, collection } from 'firebase/firestore';
 import { db, auth } from '../firebase-config';
 import { useNavigate } from 'react-router-dom';
-
+// import MultiSelect from 'react-multi-select-component';
+const courses = [
+  { label: 'React', value: 'react' },
+  { label: 'JavaScript', value: 'javascript' },
+  { label: 'Node.js', value: 'nodejs' },
+  // ... add more courses
+];
 function CreatePost({ isAuth }) {
   const [title, setTitle] = useState('');
   const [jobTitle, setJobTitle] = useState('');
@@ -14,6 +20,8 @@ function CreatePost({ isAuth }) {
   const [postDate, setPostDate] = useState('');
   const [location, setLocation] = useState('');
   const [requirements, setRequirements] = useState('');
+  const [selectedCourses, setSelectedCourses] = useState([]); // State for selected courses
+  const [courses, setCourses] = useState([]); // State for selected courses
 
   const postsCollectionRef = collection(db, 'posts');
   let navigate = useNavigate();
@@ -103,6 +111,19 @@ function CreatePost({ isAuth }) {
             placeholder='Skills...'
             onChange={(event) => setSkills(event.target.value)}
           />
+        </div>
+        <div className='inputGp'>
+          <label>Courses:</label>
+          <select
+            multiple
+            value={courses}
+            onChange={(event) => setCourses(event.target.value)}
+          >
+            <option value='course1'>Course 1</option>
+            <option value='course2'>Course 2</option>
+            <option value='course3'>Course 3</option>
+            {/* Add more options as needed */}
+          </select>
         </div>
 
         <div className='inputGp'>
