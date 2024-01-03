@@ -16,8 +16,10 @@ function Banner(props) {
           }}
         ></div>
         <div className='align-center'>
-          <h1 className='just-title sub-banner-title'>BrainX Technologies</h1>
-          <a className='website-title' href='https://www.brainxtech.com'>
+          <h1 className='just-title sub-banner-title'>
+            {props.postInfo.companyName}
+          </h1>
+          <a className='website-title' href={props.postInfo.jobLink}>
             View Website
           </a>
           <div>

@@ -19,16 +19,17 @@ function Admin({ isAuth }) {
   const [editedPostId, setEditedPostId] = useState(null);
 
   // New state variables
-  const [title, setTitle] = useState('');
+
   const [jobTitle, setJobTitle] = useState('');
+  const [jobLink, setJobLink] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [companyName, setCompanyName] = useState('');
-  const [jobType, setJobType] = useState('');
-  const [skills, setSkills] = useState('');
+  const [jobType, setJobType] = useState('remote');
+  const [workHours, setWorkHours] = useState('');
   const [postDate, setPostDate] = useState('');
+  const [postLastDate, setPostLastDate] = useState('');
   const [location, setLocation] = useState('');
   const [requirements, setRequirements] = useState('');
-  const [jobLink, setJobLink] = useState('');
 
   const predefinedJobTypes = [
     'Full-Time',
@@ -54,16 +55,17 @@ function Admin({ isAuth }) {
   const startEditing = (post) => {
     setIsEditing(true);
     setEditedPostId(post.id);
-    setTitle(post.title);
+
     setJobTitle(post.jobTitle);
+    setJobLink(post.jobLink);
     setJobDescription(post.jobDescription);
     setCompanyName(post.companyName);
     setJobType(post.jobType);
-    setSkills(post.skills);
+    setWorkHours(post.setWorkHours);
     setPostDate(post.postDate);
+    setPostLastDate(post.postLastDate);
     setLocation(post.location);
     setRequirements(post.requirements);
-    setJobLink(post.jobLink);
     setEditedPost(post);
   };
 
@@ -71,32 +73,33 @@ function Admin({ isAuth }) {
     setIsEditing(false);
 
     setEditedPostId(null);
-    setTitle('');
+
     setJobTitle('');
+    setJobLink('');
     setJobDescription('');
     setCompanyName('');
     setJobType('');
-    setSkills('');
+    setWorkHours('');
     setPostDate('');
+    setPostLastDate('');
     setLocation('');
     setRequirements('');
-    setJobLink('');
     setEditedPost({});
   };
 
   const updatePost = async () => {
     const postDoc = doc(db, 'posts', editedPostId);
     await updateDoc(postDoc, {
-      title: editedPost.title,
       jobTitle: editedPost.jobTitle,
+      jobLink: editedPost.jobLink,
       jobDescription: editedPost.jobDescription,
       companyName: editedPost.companyName,
       jobType: editedPost.jobType,
-      skills: editedPost.skills,
+      workHours: editedPost.workHours,
       postDate: editedPost.postDate,
+      postLastDate: editedPost.postLastDate,
       location: editedPost.location,
       requirements: editedPost.requirements,
-      jobLink: editedPost.jobLink,
     });
     cancelEditing();
   };
@@ -149,35 +152,10 @@ function Admin({ isAuth }) {
                 </div>
                 <div className='postHeader'>
                   <div className='title'>
-                    <label> Title:</label>
-                    {editedPostId === post.id ? (
-                      <input
-                        className='border-gray-300'
-                        type='text'
-                        value={editedPost.title}
-                        onChange={(e) =>
-                          setEditedPost({
-                            ...editedPost,
-                            title: e.target.value,
-                          })
-                        }
-                      />
-                    ) : (
-                      <h1
-                        className='text-3xl cursor-pointer'
-                        onClick={() => navigate(`/posts/${post.id}`)}
-                      >
-                        {post.title}
-                      </h1>
-                    )}
-                  </div>
-                </div>
-
-                <div className='postTextContainer'>
-                  <div>
                     <label> Job Title:</label>
                     {editedPostId === post.id ? (
                       <input
+                        className='border-gray-300'
                         type='text'
                         value={editedPost.jobTitle}
                         onChange={(e) =>
@@ -188,9 +166,39 @@ function Admin({ isAuth }) {
                         }
                       />
                     ) : (
-                      post.jobTitle
+                      <h1
+                        className='text-3xl cursor-pointer inline-block'
+                        onClick={() => navigate(`/posts/${post.id}`)}
+                      >
+                        {post.jobTitle}
+                      </h1>
                     )}
                   </div>
+                </div>
+
+                <div>
+                  <label>Job Url Link:</label>
+                  {editedPostId === post.id ? (
+                    <input
+                      type='text'
+                      value={editedPost.jobLink}
+                      onChange={(e) =>
+                        setEditedPost({
+                          ...editedPost,
+                          jobLink: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    <a href={post.jobLink}>
+                      <button className='text-blue-500 text-sm border border-blue-500 px-5 py-1 rounded-md hover:bg-blue-500 hover:text-white '>
+                        Apply
+                      </button>
+                    </a>
+                  )}
+                </div>
+
+                <div className='postTextContainer'>
                   <div>
                     <label>Job Description:</label>
                     {editedPostId === post.id ? (
@@ -255,20 +263,20 @@ function Admin({ isAuth }) {
                     )}
                   </div>
                   <div>
-                    <label>Skills:</label>
+                    <label> Work Hours :</label>
                     {editedPostId === post.id ? (
                       <input
                         type='text'
-                        value={editedPost.skills}
+                        value={editedPost.workHours}
                         onChange={(e) =>
                           setEditedPost({
                             ...editedPost,
-                            skills: e.target.value,
+                            workHours: e.target.value,
                           })
                         }
                       />
                     ) : (
-                      post.skills
+                      post.workHours
                     )}
                   </div>
                   <div>
@@ -288,6 +296,25 @@ function Admin({ isAuth }) {
                       post.postDate
                     )}
                   </div>
+
+                  <div>
+                    <label>Post Last Date:</label>
+                    {editedPostId === post.id ? (
+                      <input
+                        type='date'
+                        value={editedPost.postLastDate}
+                        onChange={(e) =>
+                          setEditedPost({
+                            ...editedPost,
+                            postLastDate: e.target.value,
+                          })
+                        }
+                      />
+                    ) : (
+                      post.postLastDate
+                    )}
+                  </div>
+
                   <div>
                     <label>Location:</label>
                     {editedPostId === post.id ? (
@@ -320,28 +347,6 @@ function Admin({ isAuth }) {
                       />
                     ) : (
                       post.requirements
-                    )}
-                  </div>
-
-                  <div>
-                    <label>Job Url Link:</label>
-                    {editedPostId === post.id ? (
-                      <input
-                        type='text'
-                        value={editedPost.jobLink}
-                        onChange={(e) =>
-                          setEditedPost({
-                            ...editedPost,
-                            jobLink: e.target.value,
-                          })
-                        }
-                      />
-                    ) : (
-                      <a href={post.jobLink}>
-                        <button className='text-blue-500 text-sm border border-blue-500 px-5 py-1 rounded-md hover:bg-blue-500 hover:text-white '>
-                          Apply
-                        </button>
-                      </a>
                     )}
                   </div>
                 </div>

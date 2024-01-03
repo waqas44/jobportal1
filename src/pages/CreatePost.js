@@ -10,14 +10,15 @@ const courses = [
   // ... add more courses
 ];
 function CreatePost({ isAuth }) {
-  const [title, setTitle] = useState('');
+  // const [title, setTitle] = useState('');
   const [jobTitle, setJobTitle] = useState('');
   const [jobLink, setJobLink] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [jobType, setJobType] = useState('remote'); // Default to 'remote'
-  const [skills, setSkills] = useState('');
+  const [workHours, setWorkHours] = useState('');
   const [postDate, setPostDate] = useState('');
+  const [postLastDate, setPostLastDate] = useState('');
   const [location, setLocation] = useState('');
   const [requirements, setRequirements] = useState('');
   const [selectedCourses, setSelectedCourses] = useState([]); // State for selected courses
@@ -28,14 +29,15 @@ function CreatePost({ isAuth }) {
 
   const createPost = async () => {
     await addDoc(postsCollectionRef, {
-      title,
+      // title,
       jobTitle,
       jobLink,
       jobDescription,
       companyName,
       jobType,
-      skills,
+      workHours,
       postDate,
+      postLastDate,
       location,
       requirements,
 
@@ -55,26 +57,25 @@ function CreatePost({ isAuth }) {
       <div className='cpContainer'>
         <h1 className='text-3xl'>Post A Job</h1>
 
-        <div className='inputGp'>
+        {/* <div className='inputGp'>
           <label> Title:</label>
           <input
             placeholder='Title...'
             onChange={(event) => setTitle(event.target.value)}
           />
-        </div>
-        <div className='inputGp'>
-          <label> Job Url Link:</label>
-          <input
-            placeholder='Job Url Link...'
-            onChange={(event) => setJobLink(event.target.value)}
-          />
-        </div>
-
+        </div> */}
         <div className='inputGp'>
           <label> Job Title:</label>
           <input
             placeholder='Job Title...'
             onChange={(event) => setJobTitle(event.target.value)}
+          />
+        </div>
+        <div className='inputGp'>
+          <label> Job Url Link:</label>
+          <input
+            placeholder='https://google.com/job...'
+            onChange={(event) => setJobLink(event.target.value)}
           />
         </div>
 
@@ -89,7 +90,7 @@ function CreatePost({ isAuth }) {
         <div className='inputGp'>
           <label> Company Name:</label>
           <input
-            placeholder='Company...'
+            placeholder='AH Traders ...'
             onChange={(event) => setCompanyName(event.target.value)}
           />
         </div>
@@ -106,24 +107,11 @@ function CreatePost({ isAuth }) {
         </div>
 
         <div className='inputGp'>
-          <label> Skills:</label>
+          <label> Work Hours:</label>
           <input
-            placeholder='Skills...'
-            onChange={(event) => setSkills(event.target.value)}
+            placeholder='40h / Week...'
+            onChange={(event) => setWorkHours(event.target.value)}
           />
-        </div>
-        <div className='inputGp'>
-          <label>Courses:</label>
-          <select
-            multiple
-            value={courses}
-            onChange={(event) => setCourses(event.target.value)}
-          >
-            <option value='course1'>Course 1</option>
-            <option value='course2'>Course 2</option>
-            <option value='course3'>Course 3</option>
-            {/* Add more options as needed */}
-          </select>
         </div>
 
         <div className='inputGp'>
@@ -133,11 +121,18 @@ function CreatePost({ isAuth }) {
             onChange={(event) => setPostDate(event.target.value)}
           />
         </div>
+        <div className='inputGp'>
+          <label> Last Date Apply:</label>
+          <input
+            type='date'
+            onChange={(event) => setPostLastDate(event.target.value)}
+          />
+        </div>
 
         <div className='inputGp'>
           <label> Location:</label>
           <input
-            placeholder='Location...'
+            placeholder='Lahore, PK...'
             onChange={(event) => setLocation(event.target.value)}
           />
         </div>
@@ -145,7 +140,7 @@ function CreatePost({ isAuth }) {
         <div className='inputGp'>
           <label> Requirements (Degree):</label>
           <input
-            placeholder='Requirements...'
+            placeholder='Master or Bachelor in Computer Science ...'
             onChange={(event) => setRequirements(event.target.value)}
           />
         </div>

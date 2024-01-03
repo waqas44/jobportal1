@@ -43,15 +43,15 @@ function App() {
       </div>
       <Routes>
         <Route path='/' element={<Home isAuth={isAuth} />} />
-        <Route path='/home2' element={<Home2 isAuth={isAuth} />} />
+        {/* <Route path='/home2' element={<Home2 isAuth={isAuth} />} /> */}
         <Route path='/admin' element={<Admin isAuth={isAuth} />} />
         {/* <Route path='/admin2' element={<Admin2 isAuth={isAuth} />} /> */}
 
         <Route path='/createpost' element={<CreatePost isAuth={isAuth} />} />
-        <Route path='/createpost2' element={<CreatePost2 isAuth={isAuth} />} />
+        {/* <Route path='/createpost2' element={<CreatePost2 isAuth={isAuth} />} /> */}
         <Route path='/login' element={<Login setIsAuth={setIsAuth} />} />
         <Route path='/posts/:id' element={<SinglePost />} />
-        <Route path='/posts2/:id' element={<SinglePost2 />} />
+        {/* <Route path='/posts2/:id' element={<SinglePost2 />} /> */}
       </Routes>
     </Router>
   );

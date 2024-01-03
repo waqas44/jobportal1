@@ -5,7 +5,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'; // Import useNa
 import '../single.css';
 import Banner from '../components/Banner';
 
-function SinglePost2() {
+function SinglePost() {
   const [post, setPost] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
@@ -17,18 +17,17 @@ function SinglePost2() {
       const postDoc = doc(db, 'posts', postId);
       const docSnap = await getDoc(postDoc);
       const postData = {
-        title: docSnap.data().title,
         jobTitle: docSnap.data().jobTitle,
-        companyName: docSnap.data().companyName,
+        jobLink: docSnap.data().jobLink,
         jobDescription: docSnap.data().jobDescription,
+        companyName: docSnap.data().companyName,
         jobType: docSnap.data().jobType,
-        location: docSnap.data().location,
+        workHours: docSnap.data().workHours,
         postDate: docSnap.data().postDate,
+        postLastDate: docSnap.data().postLastDate,
+        location: docSnap.data().location,
         requirements: docSnap.data().requirements,
-        skills: docSnap.data().skills,
-        gender: docSnap.data().gender,
-        age: docSnap.data().age,
-        postText: docSnap.data().postText,
+
         author: docSnap.data().author.name,
       };
       console.log(docSnap.data());
@@ -47,21 +46,33 @@ function SinglePost2() {
     e.preventDefault();
     const postDocRef = doc(db, 'posts', postId);
     await updateDoc(postDocRef, {
-      title: formData.title,
-      gender: formData.gender,
-      age: formData.age,
-      postText: formData.postText,
+      jobTitle: formData.jobTitle,
+      jobLink: formData.jobLink,
+      jobDescription: formData.jobDescription,
+      companyName: formData.companyName,
+      jobType: formData.jobType,
+      workHours: formData.workHours,
+      postDate: formData.postDate,
+      postLastDate: formData.postLastDate,
+      location: formData.location,
+      requirements: formData.requirements,
+
       // Update other fields as needed
     });
 
     // Fetch the updated data from Firebase
     const updatedDocSnap = await getDoc(postDocRef);
     const updatedPostData = {
-      title: updatedDocSnap.data().title,
-      gender: updatedDocSnap.data().gender,
-      age: updatedDocSnap.data().age,
-      postText: updatedDocSnap.data().postText,
-      author: updatedDocSnap.data().author.name,
+      jobTitle: updatedDocSnap.data().jobTitle,
+      jobLink: updatedDocSnap.data().jobLink,
+      jobDescription: updatedDocSnap.data().jobDescription,
+      companyName: updatedDocSnap.data().companyName,
+      jobType: updatedDocSnap.data().jobType,
+      workHours: updatedDocSnap.data().workHours,
+      postDate: updatedDocSnap.data().postDate,
+      postLastDate: updatedDocSnap.data().postLastDate,
+      location: updatedDocSnap.data().location,
+      requirements: updatedDocSnap.data().requirements,
     };
 
     // Update the local state with the fetched data
@@ -90,6 +101,14 @@ function SinglePost2() {
       [name]: value,
     }));
   };
+
+  const handleChange2 = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   const cancelHandle = () => {
     setIsEditing(false);
   };
@@ -100,33 +119,90 @@ function SinglePost2() {
           <form onSubmit={handleSubmit}>
             <input
               type='text'
-              name='title'
-              value={formData.title}
+              name='Job title'
+              value={formData.jobTitle}
               onChange={handleChange}
-              placeholder='Title'
+              placeholder='Job title'
             />
             <input
-              className='border border-gray-300 rounded-md py-1 pl-4 '
+              type='url'
+              name='job link'
+              value={formData.jobLink}
+              onChange={handleChange}
+              placeholder='job link'
+            />
+            <input
               type='text'
-              name='gender'
-              value={formData.gender}
+              name='Job Description'
+              value={formData.jobDescription}
               onChange={handleChange}
-              placeholder='Gender'
+              placeholder='Job Description'
+            />
+
+            <input
+              type='text'
+              name='Company Name '
+              value={formData.companyName}
+              onChange={handleChange}
+              placeholder='Company Name'
+            />
+
+            {/* <select defaultValue={formData.jobType} onChange={handleChange}>
+              <option value='remote'>Remote</option>
+              <option value='inoffice'>In Office</option>
+            </select> */}
+
+            <select
+              onChange={handleChange2}
+              name='jobType'
+              value={formData.jobType}
+              className='w-64 py-3 pl-4 bg-zinc-200 font-semibold rounded-md'
+            >
+              <option value='' disabled hidden>
+                Job Role
+              </option>
+              <option value='iOS Developer'>iOS Developer</option>
+              <option value='Frontend Developer'>Frontend Developer</option>
+              <option value='Backend Developer'>Backend Developer</option>
+              <option value='Android Developer'>Android Developer</option>
+              <option value='Developer Advocate'>Developer Advocate</option>
+            </select>
+            <input
+              type='text'
+              name='workHours'
+              value={formData.workHours}
+              onChange={handleChange}
+              placeholder='40h / week ...'
+            />
+
+            <input
+              type='date'
+              name='posDate'
+              value={formData.postDate}
+              onChange={handleChange}
+            />
+
+            <input
+              type='date'
+              name='posDate'
+              value={formData.postLastDate}
+              onChange={handleChange}
+            />
+
+            <input
+              type='text'
+              name='Job location'
+              value={formData.location}
+              onChange={handleChange}
+              placeholder='e.g. Lahore, Pak'
             />
             <input
-              className='border border-gray-300 rounded-md py-1 pl-4 '
-              type='number'
-              name='age'
-              value={formData.age}
+              type='text'
+              name='Job Requirments'
+              value={formData.requirements}
               onChange={handleChange}
-              placeholder='Age'
+              placeholder='Master bachlor ...'
             />
-            <textarea
-              name='postText'
-              value={formData.postText}
-              onChange={handleChange}
-              placeholder='Post Text'
-            ></textarea>
             {/* Add other fields as needed */}
             <button type='submit'>Update</button>
             <button type='button' onClick={cancelHandle}>
@@ -139,25 +215,27 @@ function SinglePost2() {
             <h1 className='text-3xl'>{post.title}</h1>
             <div className='postTextContainer'>
               <div className='post-content'>Job Title : {post.jobTitle}</div>
-              <div className='post-content'>
-                Company Name : {post.companyName}
-              </div>
+              <div className='post-content'>Job Link : {post.jobLink}</div>
               <div className='post-content'>
                 Job Description : <pre>{post.jobDescription}</pre>
               </div>
+
+              <div className='post-content'>
+                Company Name : {post.companyName}
+              </div>
               <div className='post-content'>Job Type : {post.jobType}</div>
-              <div className='post-content'>Location : {post.location}</div>
-              <div className='post-content'>Skills : {post.skills}</div>
+              <div className='post-content'>
+                Working Hours : {post.workHours}
+              </div>
               <div className='post-content'>Post Date : {post.postDate}</div>
               <div className='post-content'>
                 Requirements :{post.requirements}
               </div>
-              <div className='post-content'>Job Link : {post.jobLink}</div>
-              <div className='post-content'>Post Date : {post.postDate}</div>
 
-              <div>Gender: {post.gender}</div>
-              <div>Age: {post.age}</div>
-              <div>{post.postText}</div>
+              <div className='post-content'>
+                Post Last Date : {post.posLasttDate}
+              </div>
+              <div className='post-content'>Location : {post.location}</div>
             </div>
             <h3>@{post.author}</h3>
             <button onClick={handleEdit}>Edit</button>
@@ -355,4 +433,4 @@ function SinglePost2() {
   );
 }
 
-export default SinglePost2;
+export default SinglePost;
