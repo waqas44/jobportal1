@@ -29,6 +29,8 @@ function SinglePost() {
         requirements: docSnap.data().requirements,
 
         author: docSnap.data().author.name,
+
+        postUrl: `http://localhost:3000/posts/${postId}`,
       };
       console.log(docSnap.data());
       setPost(postData);
@@ -119,21 +121,21 @@ function SinglePost() {
           <form onSubmit={handleSubmit}>
             <input
               type='text'
-              name='Job title'
+              name='jobTitle'
               value={formData.jobTitle}
               onChange={handleChange}
               placeholder='Job title'
             />
             <input
               type='url'
-              name='job link'
+              name='jobLink'
               value={formData.jobLink}
               onChange={handleChange}
               placeholder='job link'
             />
             <input
               type='text'
-              name='Job Description'
+              name='jobDescription'
               value={formData.jobDescription}
               onChange={handleChange}
               placeholder='Job Description'
@@ -141,7 +143,7 @@ function SinglePost() {
 
             <input
               type='text'
-              name='Company Name '
+              name='companyName'
               value={formData.companyName}
               onChange={handleChange}
               placeholder='Company Name'
@@ -177,28 +179,28 @@ function SinglePost() {
 
             <input
               type='date'
-              name='posDate'
+              name='postDate'
               value={formData.postDate}
               onChange={handleChange}
             />
 
             <input
               type='date'
-              name='posDate'
+              name='postLastDate'
               value={formData.postLastDate}
               onChange={handleChange}
             />
 
             <input
               type='text'
-              name='Job location'
+              name='location'
               value={formData.location}
               onChange={handleChange}
               placeholder='e.g. Lahore, Pak'
             />
             <input
               type='text'
-              name='Job Requirments'
+              name='requirements'
               value={formData.requirements}
               onChange={handleChange}
               placeholder='Master bachlor ...'
@@ -228,14 +230,14 @@ function SinglePost() {
                 Working Hours : {post.workHours}
               </div>
               <div className='post-content'>Post Date : {post.postDate}</div>
+
+              <div className='post-content'>
+                Post Last Date : {post.postLastDate}
+              </div>
+              <div className='post-content'>Location : {post.location}</div>
               <div className='post-content'>
                 Requirements :{post.requirements}
               </div>
-
-              <div className='post-content'>
-                Post Last Date : {post.posLasttDate}
-              </div>
-              <div className='post-content'>Location : {post.location}</div>
             </div>
             <h3>@{post.author}</h3>
             <button onClick={handleEdit}>Edit</button>
@@ -255,16 +257,16 @@ function SinglePost() {
                 <div> {post.companyName}</div>
               </div>
               <div className='marker meta-tag no-float'>
-                <div>Lahore, Pakistan</div>
+                <div>{post.location}</div>
               </div>
               {/* <div className='meta-tag money no-float'>
                 <div>$40,000 - $200,000 / year</div>
               </div> */}
               <div className='certificate meta-tag no-float'>
-                <div>Master or Bachelor in Computer Science</div>
+                <div>{post.requirements}</div>
               </div>
               <div className='clock meta-tag no-float'>
-                <div>40h / week</div>
+                <div>{post.workHours}</div>
               </div>
             </div>
             <div className='big space super-big'></div>
@@ -277,15 +279,7 @@ function SinglePost() {
                   <div className='small space'></div>
                   <div className='w-richtext'>
                     <div className='trix-content'>
-                      <div>
-                        BrainX is hiring a full-time Shopify Web
-                        Developer/Designer. The ideal candidate will be an
-                        expert in Shopify development, including building custom
-                        themes and features from scratch as well as
-                        modifications to existing elements with expert-level
-                        knowledge of HTML, CSS/SCSS &amp; JavaScript, and
-                        conversion rate optimization for landing pages and PDPs.
-                      </div>
+                      <div>{post.jobDescription}</div>
                     </div>
 
                     <h5>Job Responsibilities</h5>
@@ -373,7 +367,7 @@ function SinglePost() {
                   <a
                     className='button full w-button'
                     data-ix='show-popup-on-click'
-                    href='https://forms.gle/7N8hCXwWTr8SLShN8'
+                    href={post.jobLink}
                     style={{ transition: 'all 0.4s ease 0s' }}
                   >
                     Apply For Job
@@ -387,15 +381,17 @@ function SinglePost() {
                     <div>
                       <a
                         className='icons-so w-inline-block'
-                        href='https://www.facebook.com/sharer.php?u=https://careers.brainxtech.com/jobs/shopify-developer-2023-12-08'
+                        href={`https://www.facebook.com/sharer.php?u=${post.postUrl}`}
                       ></a>
                       <a
                         className='twitter icons-so w-inline-block'
-                        href='https://twitter.com/intent/tweet?url=https://careers.brainxtech.com/jobs/shopify-developer-2023-12-08'
+                        href={`https://twitter.com/intent/tweet?url=${post.postUrl}`}
                       ></a>
                       <a
                         className='linkin icons-so w-inline-block'
-                        href='https://www.linkedin.com/shareArticle?mini=true&amp;url=https://careers.brainxtech.com/jobs/shopify-developer-2023-12-08'
+                        // href='https://www.linkedin.com/shareArticle?mini=true&amp;url=https://careers.brainxtech.com/jobs/shopify-developer-2023-12-08'
+
+                        href={`https://www.linkedin.com/shareArticle?mini=true&amp;url=${post.postUrl}`}
                       ></a>
                     </div>
                   </div>
@@ -409,7 +405,7 @@ function SinglePost() {
                       className='different in-pages job-time'
                       style={{ backgroundColor: '#5cb85c' }}
                     >
-                      Full-Time
+                      {post.jobType}
                     </div>
                   </div>
                 </div>

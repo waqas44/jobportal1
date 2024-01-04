@@ -115,14 +115,14 @@ function CreatePost({ isAuth }) {
         </div>
 
         <div className='inputGp'>
-          <label> Post Date:</label>
+          <label> Job Post Date:</label>
           <input
             type='date'
             onChange={(event) => setPostDate(event.target.value)}
           />
         </div>
         <div className='inputGp'>
-          <label> Last Date Apply:</label>
+          <label> Job Last Date to Apply:</label>
           <input
             type='date'
             onChange={(event) => setPostLastDate(event.target.value)}

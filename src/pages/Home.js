@@ -22,33 +22,51 @@ function Admin({ isAuth }) {
 
   return (
     <>
-      <div class='mx-40 mb-5'>
-        <div class='flex justify-between items-center px-6 py-4 bg-zinc-200 rounded-md border border-black shadow-lg hover:border-blue-500'>
-          <div class='flex flex-col items-start gap-3'>
-            <h1 class='text-xl '>iOS Developer • Apple</h1>
-            <p>Full Time - Remote</p>
-            <div class='flex items-center gap-2'>
-              <p class='text-gray-500 py-1 px-2 rounded-md border border-gray-500'>
-                SwiftUI
-              </p>
-              <p class='text-gray-500 py-1 px-2 rounded-md border border-gray-500'>
-                UiKit
-              </p>
-              <p class='text-gray-500 py-1 px-2 rounded-md border border-gray-500'>
-                Core Data
-              </p>
+      {initialLoad && (
+        <div className='postList1'>
+          {postLists.map((post) => (
+            <div className='post' key={post.id}>
+              <div class='mx-40 mb-5'>
+                <div class='flex justify-between items-center px-6 py-4 bg-zinc-100 rounded-md border border-gray-200 shadow-lg hover:border-blue-500'>
+                  <div class='flex flex-col items-start gap-3'>
+                    <h1
+                      class='text-xl cursor-pointer'
+                      onClick={() => navigate(`/posts/${post.id}`)}
+                    >
+                      {post.jobTitle} • {post.companyName}
+                    </h1>
+                    <p>
+                      Job Type -
+                      {Array.isArray(post.jobType)
+                        ? post.jobType.join(', ')
+                        : post.jobType}{' '}
+                    </p>
+                    <div class='flex items-center gap-2'>
+                      <p class='text-gray-500 py-1 px-2 rounded-md border border-gray-500'>
+                        SwiftUI
+                      </p>
+                      <p class='text-gray-500 py-1 px-2 rounded-md border border-gray-500'>
+                        UiKit
+                      </p>
+                      <p class='text-gray-500 py-1 px-2 rounded-md border border-gray-500'>
+                        Core Data
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <p>Apply Last Date : {post.postLastDate}</p>
+                    <a href={post.jobLink}>
+                      <button class='text-blue-500 border border-blue-500 px-10 py-2 rounded-md hover:bg-blue-500 hover:text-white '>
+                        Apply
+                      </button>
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div>
-            <p>Posted 13 Days ago</p>
-            <a href='https://www.apple.com/careers/in/'>
-              <button class='text-blue-500 border border-blue-500 px-10 py-2 rounded-md hover:bg-blue-500 hover:text-white '>
-                Apply
-              </button>
-            </a>
-          </div>
+          ))}
         </div>
-      </div>
+      )}
       <div className='homePage'>
         {initialLoad && (
           <div className='postList'>
@@ -60,7 +78,7 @@ function Admin({ isAuth }) {
                       className='text-3xl cursor-pointer'
                       onClick={() => navigate(`/posts/${post.id}`)}
                     >
-                      {post.title}
+                      {post.jobTitle}
                     </h1>
                   </div>
                 </div>
