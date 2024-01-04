@@ -3,7 +3,9 @@ import { addDoc, collection } from 'firebase/firestore';
 import { db, auth } from '../firebase-config';
 import { useNavigate } from 'react-router-dom';
 // import MultiSelect from 'react-multi-select-component';
-const courses = [
+import { MultiSelect } from 'react-multi-select-component'; // Import the multi-select component
+
+export const skills = [
   { label: 'React', value: 'react' },
   { label: 'JavaScript', value: 'javascript' },
   { label: 'Node.js', value: 'nodejs' },
@@ -21,8 +23,7 @@ function CreatePost({ isAuth }) {
   const [postLastDate, setPostLastDate] = useState('');
   const [location, setLocation] = useState('');
   const [requirements, setRequirements] = useState('');
-  const [selectedCourses, setSelectedCourses] = useState([]); // State for selected courses
-  const [courses, setCourses] = useState([]); // State for selected courses
+  const [selectedSkills, setSelectedSkills] = useState([]);
 
   const postsCollectionRef = collection(db, 'posts');
   let navigate = useNavigate();
@@ -40,6 +41,7 @@ function CreatePost({ isAuth }) {
       postLastDate,
       location,
       requirements,
+      skillReq: selectedSkills.map((skill) => skill.value), // Convert selected skills to an array of values
 
       author: { name: auth.currentUser.displayName, id: auth.currentUser.uid },
     });
@@ -144,10 +146,20 @@ function CreatePost({ isAuth }) {
             onChange={(event) => setRequirements(event.target.value)}
           />
         </div>
+        <div className='inputGp'>
+          <label> Skills:</label>
+          <MultiSelect
+            className='text-black'
+            options={skills}
+            value={selectedSkills}
+            onChange={setSelectedSkills}
+            labelledBy='Select'
+          />
+        </div>
 
         <button
           className='text-3xl bg-slate-600 hover:bg-blue-600'
-          onClick={createPost}
+          onClick={() => createPost(selectedSkills)} // Pass selectedSkills as an argument
         >
           Submit Post
         </button>

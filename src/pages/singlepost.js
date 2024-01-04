@@ -241,7 +241,7 @@ function SinglePost() {
             </div>
             <h3>@{post.author}</h3>
             <button onClick={handleEdit}>Edit</button>
-            <button onClick={handleDelete}>Delete</button>{' '}
+            <button onClick={handleDelete}>Delete</button>
             {/* Add delete button */}
           </>
         )}

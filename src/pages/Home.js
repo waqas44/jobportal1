@@ -23,14 +23,14 @@ function Admin({ isAuth }) {
   return (
     <>
       {initialLoad && (
-        <div className='postList1'>
+        <div className='postList1' style={{ marginTop: 20 }}>
           {postLists.map((post) => (
             <div className='post' key={post.id}>
-              <div class='mx-40 mb-5'>
-                <div class='flex justify-between items-center px-6 py-4 bg-zinc-100 rounded-md border border-gray-200 shadow-lg hover:border-blue-500'>
-                  <div class='flex flex-col items-start gap-3'>
+              <div className='mx-40 mb-5'>
+                <div className='flex justify-between items-center px-6 py-4 bg-zinc-100 rounded-md border border-gray-200 shadow-lg hover:border-blue-500'>
+                  <div className='flex flex-col items-start gap-3'>
                     <h1
-                      class='text-xl cursor-pointer'
+                      className='text-xl cursor-pointer'
                       onClick={() => navigate(`/posts/${post.id}`)}
                     >
                       {post.jobTitle} • {post.companyName}
@@ -41,22 +41,16 @@ function Admin({ isAuth }) {
                         ? post.jobType.join(', ')
                         : post.jobType}{' '}
                     </p>
-                    <div class='flex items-center gap-2'>
-                      <p class='text-gray-500 py-1 px-2 rounded-md border border-gray-500'>
-                        SwiftUI
-                      </p>
-                      <p class='text-gray-500 py-1 px-2 rounded-md border border-gray-500'>
-                        UiKit
-                      </p>
-                      <p class='text-gray-500 py-1 px-2 rounded-md border border-gray-500'>
-                        Core Data
+                    <div className='flex items-center gap-2'>
+                      <p className='text-gray-500 py-1 px-2 rounded-md border border-gray-500'>
+                        Post Date: {post.postDate}
                       </p>
                     </div>
                   </div>
                   <div>
                     <p>Apply Last Date : {post.postLastDate}</p>
                     <a href={post.jobLink}>
-                      <button class='text-blue-500 border border-blue-500 px-10 py-2 rounded-md hover:bg-blue-500 hover:text-white '>
+                      <button className='text-blue-500 border border-blue-500 px-10 py-2 rounded-md hover:bg-blue-500 hover:text-white '>
                         Apply
                       </button>
                     </a>
@@ -67,7 +61,7 @@ function Admin({ isAuth }) {
           ))}
         </div>
       )}
-      <div className='homePage'>
+      <div className='homePage' style={{ display: 'none' }}>
         {initialLoad && (
           <div className='postList'>
             {postLists.map((post) => (
