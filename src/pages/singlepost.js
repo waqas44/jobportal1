@@ -4,11 +4,14 @@ import { auth, db } from '../firebase-config';
 import { useParams, useNavigate, Link } from 'react-router-dom'; // Import useNavigate
 import '../single.css';
 import Banner from '../components/Banner';
+import { MultiSelect } from 'react-multi-select-component'; // Import the multi-select component
+import { skills } from './CreatePost';
 
 function SinglePost() {
   const [post, setPost] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
+
   const postId = useParams().id;
   const navigate = useNavigate(); // Initialize useNavigate
 
@@ -59,6 +62,8 @@ function SinglePost() {
       postLastDate: formData.postLastDate,
       location: formData.location,
       requirements: formData.requirements,
+      // skillReq: formData.selectedSkills.map((skill) => skill.value),
+      selectedSkills: formData.selectedSkills,
 
       // Update other fields as needed
     });
@@ -76,6 +81,7 @@ function SinglePost() {
       postLastDate: updatedDocSnap.data().postLastDate,
       location: updatedDocSnap.data().location,
       requirements: updatedDocSnap.data().requirements,
+      selectedSkills: updatedDocSnap.data().selectedSkills || [], // Fetch the selectedSkills from Firestore
     };
 
     // Update the local state with the fetched data
@@ -99,10 +105,23 @@ function SinglePost() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+
+    // Handle multi-select
+    if (e.target.multiple) {
+      const selectedOptions = Array.from(
+        e.target.selectedOptions,
+        (option) => option.value
+      );
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: selectedOptions,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleChange2 = (e) => {
@@ -115,11 +134,26 @@ function SinglePost() {
   const cancelHandle = () => {
     setIsEditing(false);
   };
+
   return (
     <>
       <div className='singlePost'>
         {isEditing ? (
           <form onSubmit={handleSubmit}>
+            <select
+              multiple
+              name='selectedSkills'
+              value={formData.selectedSkills}
+              onChange={handleChange}
+              className='w-64 py-3 pl-4 bg-zinc-200 font-semibold rounded-md'
+            >
+              {/* List of skills */}
+              <option value='react'>react</option>
+              <option value='nodejs'>CSS</option>
+              <option value='javascript'>JavaScript</option>
+              {/* Add more skills as needed */}
+            </select>
+
             <input
               type='text'
               name='jobTitle'
@@ -221,6 +255,7 @@ function SinglePost() {
                 Selected Skills:{' '}
                 {post.selectedSkills && post.selectedSkills.join(', ')}
               </div>
+
               <div className='post-content'>Job Title : {post.jobTitle}</div>
               <div className='post-content'>Job Link : {post.jobLink}</div>
               <div className='post-content'>
