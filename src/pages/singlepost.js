@@ -27,6 +27,7 @@ function SinglePost() {
         postLastDate: docSnap.data().postLastDate,
         location: docSnap.data().location,
         requirements: docSnap.data().requirements,
+        selectedSkills: docSnap.data().skillReq || [], // Fetch the selectedSkills from Firestore
 
         author: docSnap.data().author.name,
 
@@ -216,6 +217,10 @@ function SinglePost() {
           <>
             <h1 className='text-3xl'>{post.title}</h1>
             <div className='postTextContainer'>
+              <div className='post-content'>
+                Selected Skills:{' '}
+                {post.selectedSkills && post.selectedSkills.join(', ')}
+              </div>
               <div className='post-content'>Job Title : {post.jobTitle}</div>
               <div className='post-content'>Job Link : {post.jobLink}</div>
               <div className='post-content'>

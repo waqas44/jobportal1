@@ -28,7 +28,7 @@ function CreatePost({ isAuth }) {
   const postsCollectionRef = collection(db, 'posts');
   let navigate = useNavigate();
 
-  const createPost = async () => {
+  const createPostNew = async () => {
     await addDoc(postsCollectionRef, {
       // title,
       jobTitle,
@@ -159,7 +159,7 @@ function CreatePost({ isAuth }) {
 
         <button
           className='text-3xl bg-slate-600 hover:bg-blue-600'
-          onClick={() => createPost(selectedSkills)} // Pass selectedSkills as an argument
+          onClick={() => createPostNew(selectedSkills)} // Pass selectedSkills as an argument
         >
           Submit Post
         </button>
