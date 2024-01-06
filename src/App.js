@@ -50,7 +50,7 @@ function App() {
         <Route path='/createpost' element={<CreatePost isAuth={isAuth} />} />
         {/* <Route path='/createpost2' element={<CreatePost2 isAuth={isAuth} />} /> */}
         <Route path='/login' element={<Login setIsAuth={setIsAuth} />} />
-        <Route path='/posts/:id' element={<SinglePost />} />
+        <Route path='/posts/:id' element={<SinglePost isAuth={isAuth} />} />
         {/* <Route path='/posts2/:id' element={<SinglePost2 />} /> */}
       </Routes>
     </Router>

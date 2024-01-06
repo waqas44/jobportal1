@@ -39,16 +39,22 @@ function Admin({ isAuth }) {
                       Job Type -
                       {Array.isArray(post.jobType)
                         ? post.jobType.join(', ')
-                        : post.jobType}{' '}
+                        : post.jobType}
                     </p>
+
                     <div className='flex items-center gap-2'>
+                      {/* <p> {post..map((b) => b)}</p> */}
+                      Skills Requirements:
                       <p className='text-gray-500 py-1 px-2 rounded-md border border-gray-500'>
-                        Post Date: {post.postDate}
+                        {Array.isArray(post.skillReq)
+                          ? post.skillReq.join(', ')
+                          : post.skillReq}
                       </p>
                     </div>
                   </div>
                   <div>
                     <p>Apply Last Date : {post.postLastDate}</p>
+
                     <a href={post.jobLink}>
                       <button className='text-blue-500 border border-blue-500 px-10 py-2 rounded-md hover:bg-blue-500 hover:text-white '>
                         Apply

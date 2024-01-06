@@ -7,7 +7,7 @@ import Banner from '../components/Banner';
 import { MultiSelect } from 'react-multi-select-component'; // Import the multi-select component
 import { skills } from './CreatePost';
 
-function SinglePost() {
+function SinglePost({ isAuth }) {
   const [post, setPost] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
@@ -137,154 +137,220 @@ function SinglePost() {
 
   return (
     <>
-      <div className='singlePost'>
-        {isEditing ? (
-          <form onSubmit={handleSubmit}>
-            <select
-              multiple
-              name='selectedSkills'
-              value={formData.selectedSkills}
-              onChange={handleChange}
-              className='w-64 py-3 pl-4 bg-zinc-200 font-semibold rounded-md'
-            >
-              {/* List of skills */}
-              <option value='react'>react</option>
-              <option value='nodejs'>CSS</option>
-              <option value='javascript'>JavaScript</option>
-              {/* Add more skills as needed */}
-            </select>
+      <div className='createPostPage1 h-auto m-0 mr-auto ml-auto grid items-center place-items-center'>
+        <div className='singlePost cpContainer  p-10 py-5 '>
+          {isAuth && ( // Check if user is authenticated
+            <>
+              {isEditing ? (
+                <form onSubmit={handleSubmit}>
+                  <div className='inputGp'>
+                    <label> Job Title:</label>
+                    <input
+                      type='text'
+                      name='jobTitle'
+                      value={formData.jobTitle}
+                      onChange={handleChange}
+                      placeholder='Job title'
+                    />
+                  </div>
 
-            <input
-              type='text'
-              name='jobTitle'
-              value={formData.jobTitle}
-              onChange={handleChange}
-              placeholder='Job title'
-            />
-            <input
-              type='url'
-              name='jobLink'
-              value={formData.jobLink}
-              onChange={handleChange}
-              placeholder='job link'
-            />
-            <input
-              type='text'
-              name='jobDescription'
-              value={formData.jobDescription}
-              onChange={handleChange}
-              placeholder='Job Description'
-            />
+                  <div className='inputGp'>
+                    <label> Job Link:</label>
+                    <input
+                      type='url'
+                      name='jobLink'
+                      value={formData.jobLink}
+                      onChange={handleChange}
+                      placeholder='job link'
+                    />
+                  </div>
 
-            <input
-              type='text'
-              name='companyName'
-              value={formData.companyName}
-              onChange={handleChange}
-              placeholder='Company Name'
-            />
-
-            {/* <select defaultValue={formData.jobType} onChange={handleChange}>
+                  <div className='inputGp'>
+                    <label> Job Description:</label>
+                    <input
+                      type='text'
+                      name='jobDescription'
+                      value={formData.jobDescription}
+                      onChange={handleChange}
+                      placeholder='Job Description'
+                    />
+                  </div>
+                  <div className='inputGp'>
+                    <label> Company Name :</label>
+                    <input
+                      type='text'
+                      name='companyName'
+                      value={formData.companyName}
+                      onChange={handleChange}
+                      placeholder='Company Name'
+                    />
+                  </div>
+                  {/* <select defaultValue={formData.jobType} onChange={handleChange}>
               <option value='remote'>Remote</option>
               <option value='inoffice'>In Office</option>
             </select> */}
+                  <div className='inputGp'>
+                    <label> Job Type :</label>
+                    <select
+                      onChange={handleChange2}
+                      name='jobType'
+                      value={formData.jobType}
+                      className='w-64 py-3 pl-4 bg-zinc-200 font-semibold rounded-md'
+                    >
+                      <option value='' disabled hidden>
+                        Job Role
+                      </option>
+                      <option value='iOS Developer'>iOS Developer</option>
+                      <option value='Frontend Developer'>
+                        Frontend Developer
+                      </option>
+                      <option value='Backend Developer'>
+                        Backend Developer
+                      </option>
+                      <option value='Android Developer'>
+                        Android Developer
+                      </option>
+                      <option value='Developer Advocate'>
+                        Developer Advocate
+                      </option>
+                    </select>
+                  </div>
 
-            <select
-              onChange={handleChange2}
-              name='jobType'
-              value={formData.jobType}
-              className='w-64 py-3 pl-4 bg-zinc-200 font-semibold rounded-md'
-            >
-              <option value='' disabled hidden>
-                Job Role
-              </option>
-              <option value='iOS Developer'>iOS Developer</option>
-              <option value='Frontend Developer'>Frontend Developer</option>
-              <option value='Backend Developer'>Backend Developer</option>
-              <option value='Android Developer'>Android Developer</option>
-              <option value='Developer Advocate'>Developer Advocate</option>
-            </select>
-            <input
-              type='text'
-              name='workHours'
-              value={formData.workHours}
-              onChange={handleChange}
-              placeholder='40h / week ...'
-            />
+                  <div className='inputGp'>
+                    <label> workHours:</label>
+                    <input
+                      type='text'
+                      name='workHours'
+                      value={formData.workHours}
+                      onChange={handleChange}
+                      placeholder='40h / week ...'
+                    />
+                  </div>
+                  <div className='inputGp'>
+                    <label>Post Date :</label>
+                    <input
+                      type='date'
+                      name='postDate'
+                      value={formData.postDate}
+                      onChange={handleChange}
+                    />
+                  </div>
 
-            <input
-              type='date'
-              name='postDate'
-              value={formData.postDate}
-              onChange={handleChange}
-            />
+                  <div className='inputGp'>
+                    <label>Post LastDate :</label>
+                    <input
+                      type='date'
+                      name='postLastDate'
+                      value={formData.postLastDate}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className='inputGp'>
+                    <label> Location :</label>
+                    <input
+                      type='text'
+                      name='location'
+                      value={formData.location}
+                      onChange={handleChange}
+                      placeholder='e.g. Lahore, Pak'
+                    />
+                  </div>
+                  <div className='inputGp'>
+                    <label> Requirements :</label>
+                    <input
+                      type='text'
+                      name='requirements'
+                      value={formData.requirements}
+                      onChange={handleChange}
+                      placeholder='Master bachlor ...'
+                    />
+                  </div>
+                  <div className='inputGp'>
+                    <label> Skills:</label>
+                    <select
+                      multiple
+                      name='selectedSkills'
+                      value={formData.selectedSkills}
+                      onChange={handleChange}
+                      className='w-64 py-3 pl-4 bg-zinc-200 font-semibold rounded-md min-h-20'
+                    >
+                      {/* List of skills */}
+                      <option value='react'>React</option>
+                      <option value='nodejs'>Nodejs</option>
+                      <option value='javascript'>JavaScript</option>
+                      {/* Add more skills as needed */}
+                    </select>
+                  </div>
+                  {/* Add other fields as needed */}
+                  <button
+                    className='text-blue-500 text-sm border border-blue-500 bg-blue-100 px-5 py-1 rounded-md hover:bg-blue-500 hover:text-white mr-3'
+                    type='submit'
+                  >
+                    Update
+                  </button>
+                  <button
+                    className='text-blue-500 text-sm border border-blue-500 bg-blue-100 px-5 py-1 rounded-md hover:bg-blue-500 hover:text-white mr-3'
+                    type='button'
+                    onClick={cancelHandle}
+                  >
+                    Cancel
+                  </button>
+                  {/* Add delete button */}
+                </form>
+              ) : (
+                <>
+                  <h1 className='text-3xl'>{post.title}</h1>
+                  <div className='postTextContainer'>
+                    <div className='post-content'>
+                      Job Title : {post.jobTitle}
+                    </div>
+                    <div className='post-content'>
+                      Job Link : {post.jobLink}
+                    </div>
+                    <div className='post-content'>
+                      Job Description : <pre>{post.jobDescription}</pre>
+                    </div>
 
-            <input
-              type='date'
-              name='postLastDate'
-              value={formData.postLastDate}
-              onChange={handleChange}
-            />
+                    <div className='post-content'>
+                      Company Name : {post.companyName}
+                    </div>
+                    <div className='post-content'>
+                      Job Type : {post.jobType}
+                    </div>
+                    <div className='post-content'>
+                      Working Hours : {post.workHours}
+                    </div>
+                    <div className='post-content'>
+                      Post Date : {post.postDate}
+                    </div>
 
-            <input
-              type='text'
-              name='location'
-              value={formData.location}
-              onChange={handleChange}
-              placeholder='e.g. Lahore, Pak'
-            />
-            <input
-              type='text'
-              name='requirements'
-              value={formData.requirements}
-              onChange={handleChange}
-              placeholder='Master bachlor ...'
-            />
-            {/* Add other fields as needed */}
-            <button type='submit'>Update</button>
-            <button type='button' onClick={cancelHandle}>
-              Cancel
-            </button>
-            {/* Add delete button */}
-          </form>
-        ) : (
-          <>
-            <h1 className='text-3xl'>{post.title}</h1>
-            <div className='postTextContainer'>
-              <div className='post-content'>
-                Selected Skills:{' '}
-                {post.selectedSkills && post.selectedSkills.join(', ')}
-              </div>
-
-              <div className='post-content'>Job Title : {post.jobTitle}</div>
-              <div className='post-content'>Job Link : {post.jobLink}</div>
-              <div className='post-content'>
-                Job Description : <pre>{post.jobDescription}</pre>
-              </div>
-
-              <div className='post-content'>
-                Company Name : {post.companyName}
-              </div>
-              <div className='post-content'>Job Type : {post.jobType}</div>
-              <div className='post-content'>
-                Working Hours : {post.workHours}
-              </div>
-              <div className='post-content'>Post Date : {post.postDate}</div>
-
-              <div className='post-content'>
-                Post Last Date : {post.postLastDate}
-              </div>
-              <div className='post-content'>Location : {post.location}</div>
-              <div className='post-content'>
-                Requirements :{post.requirements}
-              </div>
-            </div>
-            <h3>@{post.author}</h3>
-            <button onClick={handleEdit}>Edit</button>
-            <button onClick={handleDelete}>Delete</button>
-            {/* Add delete button */}
-          </>
-        )}
+                    <div className='post-content'>
+                      Post Last Date : {post.postLastDate}
+                    </div>
+                    <div className='post-content'>
+                      Location : {post.location}
+                    </div>
+                    <div className='post-content'>
+                      Requirements :{post.requirements}
+                    </div>
+                    <div className='post-content'>
+                      Selected Skills:{' '}
+                      {post.selectedSkills && post.selectedSkills.join(', ')}
+                    </div>
+                  </div>
+                  <h3>@{post.author}</h3>
+                  <button onClick={handleEdit}>Edit</button>
+                  <button onClick={handleDelete}>Delete</button>
+                  {/* Add delete button */}
+                </>
+              )}
+            </>
+          )}
+          {!isAuth && (
+            // You can also add a message or redirect user to login
+            <p>Please login to edit this post.</p>
+          )}
+        </div>
       </div>
       <Banner postInfo={post} />
       <div className='section'>
