@@ -165,7 +165,7 @@ function SinglePost({ isAuth }) {
                     />
                   </div>
 
-                  <div className='inputGp'>
+                  {/* <div className='inputGp'>
                     <label> Job Description:</label>
                     <input
                       type='text'
@@ -173,6 +173,16 @@ function SinglePost({ isAuth }) {
                       value={formData.jobDescription}
                       onChange={handleChange}
                       placeholder='Job Description'
+                    />
+                  </div> */}
+
+                  <div className='inputGp'>
+                    <label> Job Description:</label>
+                    <textarea
+                      name='jobDescription'
+                      placeholder='Description...'
+                      onChange={handleChange}
+                      value={formData.jobDescription}
                     />
                   </div>
                   <div className='inputGp'>
@@ -200,19 +210,9 @@ function SinglePost({ isAuth }) {
                       <option value='' disabled hidden>
                         Job Role
                       </option>
-                      <option value='iOS Developer'>iOS Developer</option>
-                      <option value='Frontend Developer'>
-                        Frontend Developer
-                      </option>
-                      <option value='Backend Developer'>
-                        Backend Developer
-                      </option>
-                      <option value='Android Developer'>
-                        Android Developer
-                      </option>
-                      <option value='Developer Advocate'>
-                        Developer Advocate
-                      </option>
+                      <option value='Remote'>Remote</option>
+                      <option value='In Office'>In Office</option>
+                      <option value='Part Time'>Part Time</option>
                     </select>
                   </div>
 
@@ -308,7 +308,7 @@ function SinglePost({ isAuth }) {
                       Job Link : {post.jobLink}
                     </div>
                     <div className='post-content'>
-                      Job Description : <pre>{post.jobDescription}</pre>
+                      Job Description : {post.jobDescription}
                     </div>
 
                     <div className='post-content'>

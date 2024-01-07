@@ -73,13 +73,28 @@ function CreatePost({ isAuth }) {
             onChange={(event) => setJobTitle(event.target.value)}
           />
         </div>
+
         <div className='inputGp'>
+          <label> Job Url Link:</label>
+
+          <input
+            type='url'
+            name='url'
+            id='url'
+            placeholder='https://google.com/job...'
+            pattern='https://.*'
+            size='30'
+            onChange={(event) => setJobLink(event.target.value)}
+            required
+          />
+        </div>
+        {/* <div className='inputGp'>
           <label> Job Url Link:</label>
           <input
             placeholder='https://google.com/job...'
             onChange={(event) => setJobLink(event.target.value)}
           />
-        </div>
+        </div> */}
 
         <div className='inputGp'>
           <label> Job Description:</label>
@@ -103,8 +118,9 @@ function CreatePost({ isAuth }) {
             defaultValue={jobType}
             onChange={(event) => setJobType(event.target.value)}
           >
-            <option value='remote'>Remote</option>
-            <option value='inoffice'>In Office</option>
+            <option value='Remote'>Remote</option>
+            <option value='In Office'>In Office</option>
+            <option value='Part Time'>Part Time</option>
           </select>
         </div>
 

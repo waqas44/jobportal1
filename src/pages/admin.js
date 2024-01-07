@@ -31,13 +31,7 @@ function Admin({ isAuth }) {
   const [location, setLocation] = useState('');
   const [requirements, setRequirements] = useState('');
 
-  const predefinedJobTypes = [
-    'Full-Time',
-    'Part-Time',
-    'Contract',
-    'Freelance',
-    // Add more as needed
-  ];
+  const predefinedJobTypes = ['Remote', 'In Office', 'Part Time'];
 
   const postsCollectionRef = collection(db, 'posts');
   const navigate = useNavigate();
@@ -180,7 +174,9 @@ function Admin({ isAuth }) {
                   <label>Job Url Link:</label>
                   {editedPostId === post.id ? (
                     <input
-                      type='text'
+                      type='url'
+                      name='url'
+                      id='url'
                       value={editedPost.jobLink}
                       onChange={(e) =>
                         setEditedPost({
@@ -188,6 +184,10 @@ function Admin({ isAuth }) {
                           jobLink: e.target.value,
                         })
                       }
+                      placeholder='https://example.com'
+                      pattern='https://.*'
+                      size='30'
+                      required
                     />
                   ) : (
                     <a href={post.jobLink}>
