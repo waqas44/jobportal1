@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import ReactQuill from 'react-quill'; // Import the Quill editor
+import 'react-quill/dist/quill.snow.css'; // Import Quill's styles
 import { addDoc, collection } from 'firebase/firestore';
 import { db, auth } from '../firebase-config';
 import { useNavigate } from 'react-router-dom';
@@ -98,9 +100,17 @@ function CreatePost({ isAuth }) {
 
         <div className='inputGp'>
           <label> Job Description:</label>
+          <ReactQuill
+            value={jobDescription}
+            onChange={setJobDescription}
+            placeholder='Write your job description...'
+            style={{ minHeight: '200px' }} // Set the minimum height here
+          />
+
           <textarea
-            placeholder='Description...'
-            onChange={(event) => setJobDescription(event.target.value)}
+            style={{ display: 'none' }} // Hide this textarea as Quill will handle the content
+            value={jobDescription}
+            onChange={(e) => setJobDescription(e.target.value)}
           />
         </div>
 
@@ -154,14 +164,6 @@ function CreatePost({ isAuth }) {
             onChange={(event) => setLocation(event.target.value)}
           />
         </div>
-
-        <div className='inputGp'>
-          <label> Requirements (Degree):</label>
-          <input
-            placeholder='Master or Bachelor in Computer Science ...'
-            onChange={(event) => setRequirements(event.target.value)}
-          />
-        </div>
         <div className='inputGp'>
           <label> Skills:</label>
           <MultiSelect
@@ -170,6 +172,13 @@ function CreatePost({ isAuth }) {
             value={selectedSkills}
             onChange={setSelectedSkills}
             labelledBy='Select'
+          />
+        </div>
+        <div className='inputGp'>
+          <label> Requirements (Degree):</label>
+          <input
+            placeholder='Master or Bachelor in Computer Science ...'
+            onChange={(event) => setRequirements(event.target.value)}
           />
         </div>
 

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import ReactQuill from 'react-quill'; // Import the Quill editor
+import 'react-quill/dist/quill.snow.css'; // Import Quill's styles
 import { getDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import { useParams, useNavigate, Link } from 'react-router-dom'; // Import useNavigate
@@ -6,6 +8,7 @@ import '../single.css';
 import Banner from '../components/Banner';
 import { MultiSelect } from 'react-multi-select-component'; // Import the multi-select component
 import { skills } from './CreatePost';
+import DOMPurify from 'dompurify'; // Import DOMPurify to sanitize HTML content
 
 function SinglePost({ isAuth }) {
   const [post, setPost] = useState({});
@@ -166,25 +169,35 @@ function SinglePost({ isAuth }) {
                   </div>
 
                   {/* <div className='inputGp'>
-                    <label> Job Description:</label>
-                    <input
-                      type='text'
-                      name='jobDescription'
-                      value={formData.jobDescription}
-                      onChange={handleChange}
-                      placeholder='Job Description'
-                    />
-                  </div> */}
+                        <label> Job Description:</label>
+                        <input
+                          type='text'
+                          name='jobDescription'
+                          value={formData.jobDescription}
+                          onChange={handleChange}
+                          placeholder='Job Description'
+                        />
+                      </div> */}
 
                   <div className='inputGp'>
                     <label> Job Description:</label>
                     <textarea
+                      style={{ display: 'none' }}
                       name='jobDescription'
                       placeholder='Description...'
                       onChange={handleChange}
                       value={formData.jobDescription}
                     />
                   </div>
+
+                  <ReactQuill
+                    value={formData.jobDescription}
+                    onChange={(value) =>
+                      setFormData({ ...formData, jobDescription: value })
+                    }
+                    placeholder='Write your job description...'
+                  />
+
                   <div className='inputGp'>
                     <label> Company Name :</label>
                     <input
@@ -196,9 +209,9 @@ function SinglePost({ isAuth }) {
                     />
                   </div>
                   {/* <select defaultValue={formData.jobType} onChange={handleChange}>
-              <option value='remote'>Remote</option>
-              <option value='inoffice'>In Office</option>
-            </select> */}
+                  <option value='remote'>Remote</option>
+                  <option value='inoffice'>In Office</option>
+                </select> */}
                   <div className='inputGp'>
                     <label> Job Type :</label>
                     <select
@@ -308,7 +321,12 @@ function SinglePost({ isAuth }) {
                       Job Link : {post.jobLink}
                     </div>
                     <div className='post-content'>
-                      Job Description : {post.jobDescription}
+                      {/* Job Description : {post.jobDescription} */}
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: DOMPurify.sanitize(post.jobDescription),
+                        }}
+                      />
                     </div>
 
                     <div className='post-content'>
@@ -366,8 +384,8 @@ function SinglePost({ isAuth }) {
                 <div>{post.location}</div>
               </div>
               {/* <div className='meta-tag money no-float'>
-                <div>$40,000 - $200,000 / year</div>
-              </div> */}
+                    <div>$40,000 - $200,000 / year</div>
+                  </div> */}
               <div className='certificate meta-tag no-float'>
                 <div>{post.requirements}</div>
               </div>
@@ -385,7 +403,12 @@ function SinglePost({ isAuth }) {
                   <div className='small space'></div>
                   <div className='w-richtext'>
                     <div className='trix-content'>
-                      <div>{post.jobDescription}</div>
+                      {/* <div>{post.jobDescription}</div> */}
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: DOMPurify.sanitize(post.jobDescription),
+                        }}
+                      />
                     </div>
 
                     <h5>Job Responsibilities</h5>

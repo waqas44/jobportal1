@@ -72,7 +72,10 @@ a {
   padding: 5px;
   color: black;
 }
-
+.ql-editor {
+  min-height: 200px;
+  background-color: #eeeeee;
+}
 .inputGp input {
   height: 40px;
 }
