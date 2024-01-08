@@ -190,14 +190,6 @@ function SinglePost({ isAuth }) {
                     />
                   </div>
 
-                  <ReactQuill
-                    value={formData.jobDescription}
-                    onChange={(value) =>
-                      setFormData({ ...formData, jobDescription: value })
-                    }
-                    placeholder='Write your job description...'
-                  />
-
                   <div className='inputGp'>
                     <label> Company Name :</label>
                     <input
