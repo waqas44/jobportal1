@@ -11,6 +11,9 @@ import { auth, db } from '../firebase-config';
 import { Link, useNavigate } from 'react-router-dom';
 import Banner from '../components/Banner';
 
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
 function Admin({ isAuth }) {
   const [postLists, setPostList] = useState([]);
   const [initialLoad, setInitialLoad] = useState(false);
@@ -202,17 +205,22 @@ function Admin({ isAuth }) {
                   <div>
                     <label>Job Description:</label>
                     {editedPostId === post.id ? (
-                      <textarea
+                      <ReactQuill
                         value={editedPost.jobDescription}
-                        onChange={(e) =>
+                        onChange={(value) =>
                           setEditedPost({
                             ...editedPost,
-                            jobDescription: e.target.value,
+                            jobDescription: value,
                           })
                         }
+                        placeholder='Write your job description...'
                       />
                     ) : (
-                      post.jobDescription
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: post.jobDescription,
+                        }}
+                      />
                     )}
                   </div>
                   <div>
