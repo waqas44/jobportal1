@@ -14,6 +14,7 @@ function SinglePost({ isAuth }) {
   const [post, setPost] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
+  // const postUrl = `${window.location.origin}/posts/${postId}`;
 
   const postId = useParams().id;
   const navigate = useNavigate(); // Initialize useNavigate
@@ -37,10 +38,10 @@ function SinglePost({ isAuth }) {
 
         author: docSnap.data().author.name,
 
-        postUrl: `http://localhost:3000/posts/${postId}`,
+        postUrl: `${window.location.origin}/posts/${postId}`,
       };
       console.log(docSnap.data());
-      setPost(postData);
+      setPost({ ...postData }); // Add the dynamic postUrl to the postData
       setFormData(postData); // Set initial form data
     };
 
