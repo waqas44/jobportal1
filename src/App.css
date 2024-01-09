@@ -204,7 +204,11 @@ textarea {
   font-size: 30px;
   cursor: pointer;
 }
-
+/* .post {
+  margin: 0 auto; 
+  width: 90%;
+  max-width: 1024px;
+} */
 .post .postTextContainer {
   word-wrap: break-word;
   height: auto;
@@ -244,3 +248,17 @@ textarea {
 }
 
 /* Single Post */
+
+/* Adjust styles for screens below 1024px */
+@media (max-width: 1024px) {
+  .post {
+    width: 95%;
+    font-size: 13px; /* Adjust width for better fit on screens below 1024px */
+  }
+  .post h1 {
+    font-size: medium;
+  }
+  .post p {
+    font-size: 13px;
+  }
+}

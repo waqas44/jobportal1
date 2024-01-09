@@ -6,6 +6,7 @@ import { auth, db } from '../firebase-config';
 import { useParams, useNavigate, Link } from 'react-router-dom'; // Import useNavigate
 import '../single.css';
 import Banner from '../components/Banner';
+import Footer from '../components/Footer';
 import { MultiSelect } from 'react-multi-select-component'; // Import the multi-select component
 import { skills } from './CreatePost';
 import DOMPurify from 'dompurify'; // Import DOMPurify to sanitize HTML content
@@ -477,6 +478,7 @@ function SinglePost({ isAuth }) {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

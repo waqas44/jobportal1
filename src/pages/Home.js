@@ -3,6 +3,7 @@ import { getDocs, collection, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import { Link, useNavigate } from 'react-router-dom';
 import Banner from '../components/Banner';
+import Footer from '../components/Footer';
 
 function Admin({ isAuth }) {
   const [postLists, setPostList] = useState([]);
@@ -75,7 +76,7 @@ function Admin({ isAuth }) {
                 <div className='postHeader'>
                   <div className='title'>
                     <h1
-                      className='text-3xl cursor-pointer'
+                      className='text-lg  cursor-pointer'
                       onClick={() => navigate(`/posts/${post.id}`)}
                     >
                       {post.jobTitle}
@@ -112,6 +113,7 @@ function Admin({ isAuth }) {
           </div>
         )}
       </div>
+      <Footer />
     </>
   );
 }

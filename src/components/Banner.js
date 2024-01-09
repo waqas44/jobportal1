@@ -7,14 +7,15 @@ function Banner(props) {
   return (
     <div className='sub-banner' data-ix='show-scroll-navigation-on-scroll'>
       <div className='container-center w-container'>
-        <div
+        <a
+          href={'/'}
           className='client-big-logo'
           style={{
             backgroundImage: 'url(' + logo + ')',
             width: 200,
             height: 300,
           }}
-        ></div>
+        ></a>
         <div className='align-center'>
           <h1 className='just-title sub-banner-title'>
             {props.postInfo.companyName}
