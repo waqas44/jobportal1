@@ -131,6 +131,7 @@ function CreatePost({ isAuth }) {
             <option value='Remote'>Remote</option>
             <option value='In Office'>In Office</option>
             <option value='Part Time'>Part Time</option>
+            <option value='Full Time'>Full-Time</option>
           </select>
         </div>
 

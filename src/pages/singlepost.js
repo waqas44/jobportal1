@@ -226,6 +226,7 @@ function SinglePost({ isAuth }) {
                       <option value='Remote'>Remote</option>
                       <option value='In Office'>In Office</option>
                       <option value='Part Time'>Part Time</option>
+                      <option value='Full Time'>Full-Time</option>
                     </select>
                   </div>
 
@@ -410,84 +411,6 @@ function SinglePost({ isAuth }) {
                         }}
                       />
                     </div>
-
-                    <h5>Job Responsibilities</h5>
-                    <div className='trix-content'>
-                      <ul>
-                        <li>Strong knowledge of liquid programming language</li>
-                        <li>Strong knowledge of developing Shopify apps</li>
-                        <li>
-                          Generate custom-tailored Shopify theme and alter
-                          pre-existing templates.
-                        </li>
-                        <li>
-                          Act as a Shopify expert, specializing in all facets of
-                          the e-commerce platform.
-                        </li>
-                        <li>
-                          Strong hands to Install and customize the new Shopify
-                          theme.
-                        </li>
-                        <li>
-                          Clear concept of HTML5, CSS3, javascript/Jquery.
-                        </li>
-                        <li>
-                          Strong hands to Install and customize the new Shopify
-                          theme.
-                        </li>
-                      </ul>
-                    </div>
-
-                    <h5>Skills Required</h5>
-                    <div className='trix-content'>
-                      <ul>
-                        <li>
-                          BS/MS degree in Computer Science, Software
-                          Engineering, or a related subject.
-                        </li>
-                        <li>
-                          <strong>2 Years - 3 Years of experience</strong> is
-                          required.
-                        </li>
-                        <li>
-                          Excellent written and verbal communication skills.
-                        </li>
-                        <li>
-                          Highly self-motivated and proven Analytical and
-                          Problem-Solving skills.
-                        </li>
-                        <li>
-                          Ability to work both independently and in a
-                          collaborative environment.
-                        </li>
-                        <li>
-                          Experience developing within the Shopify and Shopify
-                          Plus platforms
-                        </li>
-                        <li>
-                          Experience developing private and public Shopify Apps
-                        </li>
-                        <li>
-                          Experience in front-end technologies including, but
-                          not limited to, JavaScript, AJAX, HTML, CSS, SASS
-                        </li>
-                        <li>Superb troubleshooting &amp; debugging skills</li>
-                        <li>
-                          A disciplined approach to testing and quality
-                          assurance
-                        </li>
-                      </ul>
-                    </div>
-
-                    <p>
-                      We have an amazing team of qualified individuals working
-                      on highly innovative enterprise projects. People who work
-                      with us work with cutting-edge technologies while
-                      contributing success to the company as well as to
-                      themselves. This is obviously above and beyond the usual
-                      stuff (excellent pay, medical benefits and frequent
-                      appraisals).
-                    </p>
                   </div>
                 </div>
               </div>
@@ -546,7 +469,7 @@ function SinglePost({ isAuth }) {
             <a
               className='button full w-button'
               data-ix='show-popup-on-click'
-              href='https://forms.gle/7N8hCXwWTr8SLShN8'
+              href={post.jobLink}
               style={{ transition: 'all 0.4s ease 0s', width: 300 }}
             >
               Apply For Job

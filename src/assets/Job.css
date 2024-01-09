@@ -3832,6 +3832,7 @@ ul.jobs-list li a {
 .trix-content ol li,
 .trix-content li li {
   margin-left: 1.5em;
+  list-style: disc;
 }
 
 .form-signin {

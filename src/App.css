@@ -41,10 +41,10 @@ a {
 }
 
 .cpContainer {
-  width: 500px;
+  width: 900px;
   height: auto;
   padding: 20px;
-  background-color: black;
+  background-color: #6094ff;
   border-radius: 12px;
   color: white;
   display: flex;
@@ -75,6 +75,17 @@ a {
 .ql-editor {
   min-height: 200px;
   background-color: #eeeeee;
+  color: #000;
+}
+.ql-editor p {
+  color: #000;
+}
+
+.post-content p {
+  color: #fff;
+}
+.post-content ul li {
+  color: #fff;
 }
 .inputGp input {
   height: 40px;

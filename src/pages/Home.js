@@ -44,7 +44,7 @@ function Admin({ isAuth }) {
 
                     <div className='flex items-center gap-2'>
                       {/* <p> {post..map((b) => b)}</p> */}
-                      Skills Requirements:
+                      Skills Required:
                       <p className='text-gray-500 py-1 px-2 rounded-md border border-gray-500'>
                         {Array.isArray(post.skillReq)
                           ? post.skillReq.join(', ')
