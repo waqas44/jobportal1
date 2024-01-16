@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
-import Home2 from './pages/Home2';
+
 import CreatePost from './pages/CreatePost';
 import CreatePost2 from './pages/CreatePost2';
 import Login from './pages/Login';
@@ -10,7 +10,7 @@ import SinglePost2 from './pages/singlepost2';
 import { useState } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from './firebase-config';
-import Admin from './pages/admin';
+import Admin from './pages/AdminArea';
 import Admin2 from './pages/admin2';
 
 function App() {

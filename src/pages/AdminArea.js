@@ -9,7 +9,7 @@ import {
 } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import { Link, useNavigate } from 'react-router-dom';
-import Banner from '../components/Banner';
+
 import Footer from '../components/Footer';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
