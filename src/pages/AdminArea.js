@@ -14,7 +14,7 @@ import Footer from '../components/Footer';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-function Admin({ isAuth }) {
+function AdminArea({ isAuth }) {
   const [postLists, setPostList] = useState([]);
   const [initialLoad, setInitialLoad] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -369,4 +369,4 @@ function Admin({ isAuth }) {
   );
 }
 
-export default Admin;
+export default AdminArea;
