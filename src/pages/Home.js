@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Banner from '../components/Banner';
 import Footer from '../components/Footer';
 
-function Admin({ isAuth }) {
+function Home({ isAuth }) {
   const [postLists, setPostList] = useState([]);
   const [initialLoad, setInitialLoad] = useState(false);
 
@@ -118,4 +118,4 @@ function Admin({ isAuth }) {
   );
 }
 
-export default Admin;
+export default Home;
