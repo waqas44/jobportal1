@@ -1,4 +1,5 @@
 import './App.css';
+// import AdminDashboard from './pages/AdminDashboard';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 
@@ -44,6 +45,7 @@ function App() {
         <Route path='/' element={<Home isAuth={isAuth} />} />
 
         <Route path='/AdminArea' element={<AdminArea isAuth={isAuth} />} />
+        {/* <Route path='/admin' element={<AdminDashboard />} /> */}
 
         <Route path='/createpost' element={<CreatePost isAuth={isAuth} />} />
 
